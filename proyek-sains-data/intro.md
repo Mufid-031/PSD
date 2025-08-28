@@ -1,24 +1,26 @@
+### Welcome to my Proyek Sains Data
+
 <!-- Typing animation -->
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=6793F7&width=435&lines=Hi%2C+everyone!+I'm+Ahmad+Mufid+Risqi.;Welcome+to+my+Github+profile!+" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=6793F7&width=435&lines=Hi%2C+everyone!+I'm+Ahmad+Mufid+Risqi.;Welcome+to+my+Github+profile!+&background=00000000" alt="Typing SVG" />
 </p>
 
 ---
 
-## 🚀 Tech Stack & Tools
+#### 🚀 Tech Stack & Tools
 
 <p align="center">
-  <img src="https://skills.syvixor.com/api/icons?i=typescript,javascript,dart,php,nodejs,bun" /><br/>
-  <img src="https://skills.syvixor.com/api/icons?i=react,nextjs,vue,nuxtjs,flutter,threejs" /><br/>
-  <img src="https://skills.syvixor.com/api/icons?i=tailwind,express,nestjs,laravel,prisma,redis" /><br/>
-  <img src="https://skills.syvixor.com/api/icons?i=mysql,postgresql,mongodb,firebase,drizzle,neon" /><br/>
-  <img src="https://skills.syvixor.com/api/icons?i=supabase,docker,postman,git,figma,vite" /><br/>
-  <img src="https://skills.syvixor.com/api/icons?i=unity,csharp" />
+  <img src="https://skills.syvixor.com/api/icons?i=typescript,javascript,dart,php,nodejs,bun&theme=dark&background=00000000" /><br/>
+  <img src="https://skills.syvixor.com/api/icons?i=react,nextjs,vue,nuxtjs,flutter,threejs&theme=dark&background=00000000" /><br/>
+  <img src="https://skills.syvixor.com/api/icons?i=tailwind,express,nestjs,laravel,prisma,redis&theme=dark&background=00000000" /><br/>
+  <img src="https://skills.syvixor.com/api/icons?i=mysql,postgresql,mongodb,firebase,drizzle,neon&theme=dark&background=00000000" /><br/>
+  <img src="https://skills.syvixor.com/api/icons?i=supabase,docker,postman,git,figma,vite&theme=dark&background=00000000" /><br/>
+  <img src="https://skills.syvixor.com/api/icons?i=unity,csharp&theme=dark&background=00000000" />
 </p>
 
 ---
 
-## 📊 GitHub Stats
+#### 📊 GitHub Stats
 
 <p align="center">
   <a href="https://github.com/Mufid-031">
@@ -29,7 +31,7 @@
 
 ---
 
-## 🟢 Live Activity
+#### 🟢 Live Activity
 
 <p align="center">
   <img src="https://lanyard.cnrad.dev/api/754215172905762837" width="380" height="190" alt="Discord Status" />
@@ -37,7 +39,7 @@
 
 ---
 
-## 📬 Contact Me
+#### 📬 Contact Me
 
 <p align="center">
   <a href="mailto:risqimufid50@gmail.com">
