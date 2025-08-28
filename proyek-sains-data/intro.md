@@ -1,5 +1,15 @@
 ### Welcome to my Proyek Sains Data
 
+<style>
+  img[src*="skills.syvixor.com"] {
+    background: transparent !important;
+  }
+
+  img[alt="Typing SVG"] {
+    background: transparent !important;
+  }
+</style>
+
 <!-- Typing animation -->
 <p align="center" style="background-color: transparent;">
   <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=6793F7&width=435&lines=Hi%2C+everyone!+I'm+Ahmad+Mufid+Risqi.;Welcome+to+my+Github+profile!+&background=transparent" alt="Typing SVG" />
