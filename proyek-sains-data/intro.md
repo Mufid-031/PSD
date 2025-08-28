@@ -10,14 +10,14 @@
   }
 </style>
 
-<!-- Typing animation -->
-<p align="center" style="background-color: transparent;">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=6793F7&width=435&lines=Hi%2C+everyone!+I'm+Ahmad+Mufid+Risqi.;Welcome+to+my+Github+profile!+&background=transparent" alt="Typing SVG" />
+<!-- Typing animation transparan -->
+<p align="center">
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=6793F7&background=00000000&width=435&lines=Hi%2C+everyone!+I'm+Ahmad+Mufid+Risqi.;Welcome+to+my+Github+profile!+" alt="Typing SVG" />
 </p>
 
 ---
 
-##### 🚀 Tech Stack & Tools
+🚀 Tech Stack & Tools
 
 <p align="center" style="bacground-color: transparent;">
   <img src="https://skills.syvixor.com/api/icons?i=typescript,javascript,dart,php,nodejs,bun&theme=dark&background=transparent" /><br/>
@@ -30,7 +30,7 @@
 
 ---
 
-##### 📊 GitHub Stats
+📊 GitHub Stats
 
 <p align="center">
   <a href="https://github.com/Mufid-031">
@@ -41,7 +41,7 @@
 
 ---
 
-##### 🟢 Live Activity
+🟢 Live Activity
 
 <p align="center">
   <img src="https://lanyard.cnrad.dev/api/754215172905762837" width="380" height="190" alt="Discord Status" />
@@ -49,7 +49,7 @@
 
 ---
 
-##### 📬 Contact Me
+📬 Contact Me
 
 <p align="center">
   <a href="mailto:risqimufid50@gmail.com">
