@@ -1,3 +1,13 @@
+<style>
+  img[src*="skills.syvixor.com"] {
+    background: transparent !important;
+  }
+
+  img[alt="Typing SVG"] {
+    background: transparent !important;
+  }
+</style>
+
 # Welcome to my Proyek Sains Data
 
 <!-- Typing animation transparan -->
@@ -21,7 +31,7 @@
 
 ## 📊 GitHub Stats
 
-<a href="https://github.com/Mufid-031">
+<a href="https://github.com/Mufid-031" style="margin-bottom: 20px;">
   <img height="160px" src="https://github-readme-stats.vercel.app/api?username=Mufid-031&theme=dracula&show_icons=true&hide_border=true&count_private=true" alt="Mufid's GitHub stats" />
   <img height="160px" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Mufid-031&theme=dracula&hide_border=true&layout=compact" alt="Top Languages" />
 </a>
