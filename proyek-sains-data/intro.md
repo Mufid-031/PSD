@@ -46,6 +46,6 @@
 
 ## 📬 Contact Me
 
-<a href="mailto:risqimufid50@gmail.com">
+<a href="mailto:risqimufid50@gmail.com" style="margin-bottom: 20px;">
   <img src="https://img.shields.io/badge/-Gmail-%23333?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" />
 </a>
