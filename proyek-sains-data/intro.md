@@ -2,7 +2,7 @@
 
 <!-- Typing animation -->
 <p align="center" style="background-color: transparent;">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=6793F7&width=435&lines=Hi%2C+everyone!+I'm+Ahmad+Mufid+Risqi.;Welcome+to+my+Github+profile!+&background=00000000" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=6793F7&width=435&lines=Hi%2C+everyone!+I'm+Ahmad+Mufid+Risqi.;Welcome+to+my+Github+profile!+&background=transparent" alt="Typing SVG" />
 </p>
 
 ---
@@ -10,11 +10,11 @@
 ##### 🚀 Tech Stack & Tools
 
 <p align="center" style="bacground-color: transparent;">
-  <img src="https://skills.syvixor.com/api/icons?i=typescript,javascript,dart,php,nodejs,bun&theme=dark&background=00000000" /><br/>
-  <img src="https://skills.syvixor.com/api/icons?i=react,nextjs,vue,nuxtjs,flutter,threejs&theme=dark&background=00000000" /><br/>
-  <img src="https://skills.syvixor.com/api/icons?i=tailwind,express,nestjs,laravel,prisma,redis&theme=dark&background=00000000" /><br/>
-  <img src="https://skills.syvixor.com/api/icons?i=mysql,postgresql,mongodb,firebase,drizzle,neon&theme=dark&background=00000000" /><br/>
-  <img src="https://skills.syvixor.com/api/icons?i=supabase,docker,postman,git,figma,vite&theme=dark&background=00000000" /><br/>
+  <img src="https://skills.syvixor.com/api/icons?i=typescript,javascript,dart,php,nodejs,bun&theme=dark&background=transparent" /><br/>
+  <img src="https://skills.syvixor.com/api/icons?i=react,nextjs,vue,nuxtjs,flutter,threejs&theme=dark&background=transparent" /><br/>
+  <img src="https://skills.syvixor.com/api/icons?i=tailwind,express,nestjs,laravel,prisma,redis&theme=dark&background=transparent" /><br/>
+  <img src="https://skills.syvixor.com/api/icons?i=mysql,postgresql,mongodb,firebase,drizzle,neon&theme=dark&background=transparent" /><br/>
+  <img src="https://skills.syvixor.com/api/icons?i=supabase,docker,postman,git,figma,vite&theme=dark&background=transparent" /><br/>
   <img src="https://skills.syvixor.com/api/icons?i=unity,csharp&theme=dark&background=00000000" />
 </p>
 
