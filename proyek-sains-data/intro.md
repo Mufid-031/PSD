@@ -1,6 +1,7 @@
 <style>
   img[src*="skills.syvixor.com"] {
     background: transparent !important;
+    margin-bottom: 5px;
   }
 
   img[alt="Typing SVG"] {
@@ -29,13 +30,6 @@
 
 ---
 
-## 📊 GitHub Stats
-
-<a href="https://github.com/Mufid-031" style="margin-bottom: 20px;">
-  <img height="160px" src="https://github-readme-stats.vercel.app/api?username=Mufid-031&theme=dracula&show_icons=true&hide_border=true&count_private=true" alt="Mufid's GitHub stats" />
-  <img height="160px" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Mufid-031&theme=dracula&hide_border=true&layout=compact" alt="Top Languages" />
-</a>
-
 ---
 
 ## 🟢 Live Activity
@@ -43,9 +37,3 @@
 <img src="https://lanyard.cnrad.dev/api/754215172905762837" width="350" height="180" alt="Discord Status" />
 
 ---
-
-## 📬 Contact Me
-
-<a href="mailto:risqimufid50@gmail.com" style="margin-bottom: 20px;">
-  <img src="https://img.shields.io/badge/-Gmail-%23333?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" />
-</a>
