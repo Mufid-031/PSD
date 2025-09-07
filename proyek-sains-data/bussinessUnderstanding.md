@@ -1,26 +1,52 @@
-# Business Understanding
+# Bussiness Understanding: Analisis Tingkat Stress pada Siswa/Pelajar
 
-Business Understanding adalah tahap awal dalam proses pengolahan data yang bertujuan untuk memahami masalah bisnis atau tujuan utama yang ingin dicapai. Tahap ini sangat penting karena menjadi landasan dari seluruh proses data mining atau data science. Tanpa pemahaman bisnis yang jelas, analisis data bisa jadi tidak relevan dengan kebutuhan organisasi.
+1. Latar Belakang Masalah
 
-Beberapa hal penting dalam Business Understanding:
+Stress akademik dan psikologis merupakan masalah serius yang sering dialami oleh siswa atau pelajar.
+Faktor seperti tekanan akademik, hubungan sosial, kondisi hidup, dan kesehatan mental dapat memengaruhi kesejahteraan mereka. jika tidak terkelola dengan baik, stress dapat berdampak negatif pada performa akademik, kesehatan fisik, dan mental siswa.
 
-1. **Menentukan Tujuan Bisnis (Business Objective)**  
-   - Memahami apa yang ingin dicapai organisasi atau individu melalui data.  
-   - Contoh: meningkatkan penjualan produk, memahami perilaku pelanggan, mengurangi biaya operasional, atau mendeteksi potensi fraud.
+2. Tujuan Bisnis
 
-2. **Menerjemahkan Tujuan Bisnis ke Tujuan Data Mining (Data Mining Goal)**  
-   - Mengubah kebutuhan bisnis menjadi permasalahan analitis yang dapat diselesaikan dengan teknik data mining atau machine learning.  
-   - Contoh: jika tujuan bisnis adalah meningkatkan penjualan, maka tujuan data mining bisa berupa membuat model prediksi pembelian pelanggan.
+Tujuan utama dari analisis ini adalah:
 
-3. **Mengidentifikasi Kriteria Keberhasilan (Success Criteria)**  
-   - Menetapkan indikator keberhasilan dari analisis data.  
-   - Contoh: peningkatan akurasi prediksi lebih dari 85%, atau peningkatan konversi penjualan sebesar 10% setelah implementasi model.
+- Mengidentifikasi faktor-faktor dominan yang berkontribusi terhadap tingkat stress siswa.
+- Membangun model prediktif yang dapat mengklasifikasikan tingkat stress siswa berdasarkan variabel-variable yang tersedia.
+- Memberikan rekomendasi kepada institusi pendidikan atau pihak terkait untuk mengembangkan strategi intervensi yang tepat guna mengurangi tingkat stress siswa.
 
-4. **Menentukan Ruang Lingkup (Scope)**  
-   - Menetapkan batasan masalah agar analisis tetap fokus.  
-   - Contoh: hanya menganalisis data transaksi 2 tahun terakhir atau hanya pada segmen pelanggan tertentu.
+3. Tujuan Data Mining
 
----
+- Melakukan ekplorasi data untuk memahami distribusi dan hubungan antar variabel.
+- Melakukan feature selection untuk menentukan variabel paling berpengaruh terhadap tingkat stress.
+- Membangun model klasifikasi (seperti Decision Tree, Random Forest, atau Logistic Regression) untuk memprediksi tingkat stress.
+- Mengevaluasi performa model menggunakan metrik seperti akurasi, presisi, recall, atau F1-score.
 
-## Kesimpulan
-Business Understanding adalah langkah untuk memastikan bahwa analisis data yang dilakukan benar-benar selaras dengan tujuan organisasi. Dengan pemahaman bisnis yang kuat, proses data mining dapat diarahkan untuk menghasilkan insight yang relevan dan actionable.
+4. Kriteria Kesuksesan
+
+- Model yang dibangun memiliki akurasi minimal 85% dalam memprediksi tingkat stress.
+- Terindetifikasi 3-5 faktor utama yang paling memengaruhi tingkat stress siswa.
+- Hasil analisis dapat digunakan untuk menyusun rekomendasi yang actionable bagi sekolah atau universitas.
+
+5. Stakeholders
+
+- Sekolah/Universitas: Untuk merancang program dukungan kesehatan mental.
+- Guru/Dosen: Untuk memahami kondisi siswa dan menyesuaikan metode pengajaran.
+- Orang Tua: Untuk lebih aware terhadap kondisi psikologi anak.
+- Siswa/Mahasiswa: Untuk lebih memahami diri sendiri dan mencari bantuan jika diperlukan.
+
+6. Data yang Digunakan
+
+Dataset terdiri dari 21 variabel independen dan 1 variabel target (stress_level). Variabel-variabel tersebut mencakup:
+
+- Faktor psikologi: anxiety_level, self_esteem, depression, mental_healt_history
+- Faktor fisik: headache, blood_pressure, sleep_quality, breathing_problem
+- Faktor lingkungan: noise_level, living_conditions, safety, basic_needs
+- Faktor akademik: academic_performance, study_load, teacher_student_relationship, future_career_concernc
+- Faktor sosial: social_support, peer_pressure, extracurricular_activities, bullying
+
+7. Deliverables (Hasil yang Diharapkan)
+
+- Laporan analisis data ekploratif (EDA).
+- Model machine learning yang telah dilatih dan dievaluasi.
+- Dashboard visualisasi interaktif (opsional, meggunakan tools seperti Tableau atau Power BI).
+- Dokumen rekomendasi strategis untuk mengurangi tingkat stress siswa.
+
