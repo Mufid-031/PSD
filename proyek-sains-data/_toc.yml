@@ -6,3 +6,5 @@ root: intro
 chapters:
 - file: bussinessUnderstanding
 - file: dataUnderstanding
+  sections:
+    - file: dataExploration
