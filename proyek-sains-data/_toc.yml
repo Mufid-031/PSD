@@ -8,3 +8,4 @@ chapters:
 - file: dataUnderstanding
   sections:
     - file: dataExploration
+    - file: oversampling
