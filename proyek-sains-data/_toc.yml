@@ -9,3 +9,4 @@ chapters:
   sections:
     - file: dataExploration
     - file: oversampling
+    - file: timeSeries
