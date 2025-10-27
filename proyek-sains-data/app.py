@@ -33,11 +33,12 @@ class AudioProcessor(AudioProcessorBase):
 # Jalankan WebRTC streamer
 ctx = webrtc_streamer(
     key="voice-cmd",
-    mode=WebRtcMode.SENDONLY,  # ✅ gunakan konstanta yang benar
+    mode="SENDONLY",  # 🟢 gunakan string, bukan konstanta
     audio_processor_factory=AudioProcessor,
     rtc_configuration=rtc_config,
     media_stream_constraints={"audio": True, "video": False},
 )
+
 
 if ctx.audio_processor:
     if st.button("🔍 Analisis Voice"):
