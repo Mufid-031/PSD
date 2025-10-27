@@ -1,7 +1,9 @@
-jupyter-book
+streamlit
 numpy
 pandas
 matplotlib
+librosa
+scikit-learn
+joblib
+soundfile
 psycopg2-binary
-sqlalchemy
-python-dotenv
