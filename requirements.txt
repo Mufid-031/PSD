@@ -1,10 +1,8 @@
 streamlit
-numpy
-pandas
-matplotlib
+st-audiorec
 librosa
+numpy
 scikit-learn
 joblib
 soundfile
 psycopg2-binary
-sounddevice
