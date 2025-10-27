@@ -89,3 +89,4 @@ else:
         result = "BUKA" if pred[0] == 0 else "TUTUP"
 
         st.success(f"🎧 Prediksi: {result}")
+
