@@ -64,15 +64,28 @@ if mode == "🎙️ Rekam langsung":
                 if self.frame_count % 50 == 0:
                     logger.info(f"Received frame #{self.frame_count}")
                 
+                # Konversi frame ke numpy array
                 sound = frame.to_ndarray()
                 
-                # Debug info
-                logger.debug(f"Frame shape: {sound.shape}, dtype: {sound.dtype}")
+                # Debug info pertama kali
+                if self.frame_count == 1:
+                    logger.info(f"First frame - shape: {sound.shape}, dtype: {sound.dtype}, format: {frame.format.name}, layout: {frame.layout.name}")
                 
-                # Konversi ke mono
+                # PENTING: PyAV mengembalikan array dengan shape (channels, samples)
+                # Kita perlu transpose jika channels ada di axis 0
                 if len(sound.shape) == 2:
+                    # Jika shape (2, 480) -> transpose ke (480, 2) lalu rata-rata
+                    if sound.shape[0] < sound.shape[1]:
+                        sound = sound.T  # Transpose
+                    # Konversi ke mono dengan rata-rata channels
                     sound = sound.mean(axis=1)
+                elif len(sound.shape) == 1:
+                    # Sudah mono
+                    pass
+                else:
+                    logger.warning(f"Unexpected shape: {sound.shape}")
                 
+                # Pastikan 1D array
                 sound = sound.flatten().astype(np.float32)
                 
                 # Thread-safe append
@@ -82,6 +95,8 @@ if mode == "🎙️ Rekam langsung":
                 return frame
             except Exception as e:
                 logger.error(f"Error in recv: {e}")
+                import traceback
+                logger.error(traceback.format_exc())
                 return frame
         
         def get_frames(self):
