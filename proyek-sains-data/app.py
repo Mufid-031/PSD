@@ -1,18 +1,12 @@
 import streamlit as st
-from streamlit_webrtc import webrtc_streamer, AudioProcessorBase, RTCConfiguration, WebRtcMode
+from audio_recorder_streamlit import audio_recorder
 import numpy as np
 import joblib
 import librosa
 import os
-import av
 import soundfile as sf
 from pydub import AudioSegment
-import threading
-import logging
-
-# Setup logging untuk debug
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger(__name__)
+import io
 
 # ===============================
 # 🔹 Judul & Deskripsi
@@ -30,22 +24,10 @@ model = joblib.load(model_path)
 scaler = joblib.load(scaler_path)
 
 # ===============================
-# 🔹 Konfigurasi WebRTC
+# 🔹 Session State
 # ===============================
-rtc_config = RTCConfiguration({
-    "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
-})
-
-# ===============================
-# 🔹 Session State untuk Auto-Analyze
-# ===============================
-if "was_playing" not in st.session_state:
-    st.session_state.was_playing = False
-if "should_analyze" not in st.session_state:
-    st.session_state.should_analyze = False
-
-# Initialize manual_analyze to avoid NameError
-manual_analyze = False
+if "last_audio" not in st.session_state:
+    st.session_state.last_audio = None
 
 # ===============================
 # 🔹 Pilihan Metode Input
@@ -53,327 +35,186 @@ manual_analyze = False
 mode = st.radio("🎧 Pilih metode input suara:", ["🎙️ Rekam langsung", "📁 Upload file (.wav / .mp3)"])
 
 # ===============================
+# 🔹 Fungsi Analisis Audio
+# ===============================
+def analyze_audio(audio_bytes, source="rekaman"):
+    """Fungsi untuk analisis audio dari bytes"""
+    try:
+        # Konversi bytes ke audio array
+        audio_segment = AudioSegment.from_file(io.BytesIO(audio_bytes), format="wav")
+        
+        # Convert ke numpy array
+        samples = np.array(audio_segment.get_array_of_samples(), dtype=np.float32)
+        
+        # Normalize berdasarkan bit depth
+        if audio_segment.sample_width == 2:  # 16-bit
+            samples = samples / 32768.0
+        elif audio_segment.sample_width == 4:  # 32-bit
+            samples = samples / 2147483648.0
+        
+        # Convert stereo ke mono jika perlu
+        if audio_segment.channels == 2:
+            samples = samples.reshape((-1, 2)).mean(axis=1)
+        
+        sr = audio_segment.frame_rate
+        
+        st.info(f"📊 Audio {source}: {len(samples)/sr:.2f} detik, SR: {sr} Hz")
+        
+        # Resample ke 16kHz jika perlu
+        if sr != 16000:
+            samples = librosa.resample(samples, orig_sr=sr, target_sr=16000)
+            sr = 16000
+        
+        # Normalisasi
+        samples = samples / (np.max(np.abs(samples)) + 1e-8)
+        
+        # Simpan untuk preview
+        sf.write("temp_audio.wav", samples, sr)
+        st.audio("temp_audio.wav", format="audio/wav")
+        
+        # Trim silence
+        samples_trimmed, _ = librosa.effects.trim(samples, top_db=20)
+        st.write(f"✂️ Setelah trim silence: {len(samples_trimmed)/sr:.2f} detik")
+        
+        # Cek durasi minimal
+        if len(samples_trimmed) < 0.3 * sr:
+            st.warning("⚠️ Audio terlalu pendek setelah trim. Mungkin hanya noise. Coba ucapkan lebih keras dan lebih lama.")
+            return None
+        
+        # Ekstraksi MFCC
+        mfcc = librosa.feature.mfcc(y=samples_trimmed, sr=sr, n_mfcc=13)
+        features = np.mean(mfcc.T, axis=0).reshape(1, -1)
+        
+        with st.expander("🔍 Detail Teknis"):
+            st.write(f"MFCC shape: {mfcc.shape}")
+            st.write(f"Features shape: {features.shape}")
+            st.write(f"Sample rate: {sr} Hz")
+            st.write(f"Duration: {len(samples_trimmed)/sr:.2f} seconds")
+        
+        # Prediksi
+        features_scaled = scaler.transform(features)
+        pred = model.predict(features_scaled)
+        result = "BUKA" if pred[0] == 0 else "TUTUP"
+        
+        # Tampilkan hasil
+        st.success(f"# 🎧 Prediksi: **{result}**")
+        
+        # Coba ambil confidence
+        try:
+            proba = model.predict_proba(features_scaled)
+            confidence = np.max(proba) * 100
+            st.info(f"**Confidence:** {confidence:.1f}%")
+            
+            # Progress bar untuk confidence
+            st.progress(confidence / 100)
+            
+            with st.expander("📊 Detail Probabilitas"):
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.metric("BUKA", f"{proba[0][0]*100:.1f}%")
+                with col2:
+                    st.metric("TUTUP", f"{proba[0][1]*100:.1f}%")
+        except:
+            pass
+        
+        return result
+        
+    except Exception as e:
+        st.error(f"❌ Error saat analisis: {str(e)}")
+        import traceback
+        with st.expander("🐛 Debug Info"):
+            st.code(traceback.format_exc())
+        return None
+
+# ===============================
 # 1️⃣ MODE REKAM LANGSUNG
 # ===============================
 if mode == "🎙️ Rekam langsung":
-    st.info("1️⃣ Tekan **START** → 2️⃣ Ucapkan 'BUKA' atau 'TUTUP' 2-3 detik → 3️⃣ Tekan **STOP** (otomatis analisis)")
+    st.info("🎙️ Tekan tombol mikrofon di bawah, ucapkan **'BUKA'** atau **'TUTUP'** dengan jelas, lalu tekan stop.")
     
-    # Audio Processor dengan debugging
-    class AudioProcessor(AudioProcessorBase):
-        def __init__(self):
-            self.frames = []
-            self.lock = threading.Lock()
-            self.sample_rate = 48000
-            self.frame_count = 0
-            logger.info("AudioProcessor initialized")
-            
-        def recv(self, frame: av.AudioFrame) -> av.AudioFrame:
-            try:
-                self.frame_count += 1
-                
-                # Log setiap 50 frames
-                if self.frame_count % 50 == 0:
-                    logger.info(f"Received frame #{self.frame_count}")
-                
-                # Konversi frame ke numpy array
-                sound = frame.to_ndarray()
-                
-                # Debug info pertama kali
-                if self.frame_count == 1:
-                    logger.info(f"First frame - shape: {sound.shape}, dtype: {sound.dtype}, format: {frame.format.name}, layout: {frame.layout.name}")
-                
-                # PENTING: PyAV mengembalikan array dengan shape (channels, samples)
-                # Kita perlu transpose jika channels ada di axis 0
-                if len(sound.shape) == 2:
-                    # Jika shape (2, 480) -> transpose ke (480, 2) lalu rata-rata
-                    if sound.shape[0] < sound.shape[1]:
-                        sound = sound.T  # Transpose
-                    # Konversi ke mono dengan rata-rata channels
-                    sound = sound.mean(axis=1)
-                elif len(sound.shape) == 1:
-                    # Sudah mono
-                    pass
-                else:
-                    logger.warning(f"Unexpected shape: {sound.shape}")
-                
-                # Pastikan 1D array
-                sound = sound.flatten().astype(np.float32)
-                
-                # Thread-safe append
-                with self.lock:
-                    self.frames.append(sound)
-                
-                return frame
-            except Exception as e:
-                logger.error(f"Error in recv: {e}")
-                import traceback
-                logger.error(traceback.format_exc())
-                return frame
-        
-        def get_frames(self):
-            with self.lock:
-                return self.frames.copy()
-        
-        def get_total_samples(self):
-            with self.lock:
-                return sum(len(f) for f in self.frames)
-        
-        def get_frame_count(self):
-            return self.frame_count
-        
-        def clear_frames(self):
-            with self.lock:
-                self.frames = []
-                self.frame_count = 0
-
-    # WebRTC Streamer dengan konfigurasi lebih eksplisit
-    ctx = webrtc_streamer(
-        key="voice-cmd-v2",  # Ganti key untuk reset
-        mode=WebRtcMode.SENDRECV,
-        audio_processor_factory=AudioProcessor,
-        rtc_configuration=rtc_config,
-        media_stream_constraints={
-            "audio": {
-                "echoCancellation": True,
-                "noiseSuppression": True,
-                "autoGainControl": True,
-            },
-            "video": False
-        },
-        async_processing=True,
+    # Audio recorder widget
+    audio_bytes = audio_recorder(
+        text="Klik untuk merekam",
+        recording_color="#e74c3c",
+        neutral_color="#3498db",
+        icon_name="microphone",
+        icon_size="3x",
+        pause_threshold=2.0,
+        sample_rate=16000
     )
-
-    # Debug info
-    with st.expander("🐛 Debug Info", expanded=True):
-        st.write(f"**WebRTC State:** {ctx.state}")
-        st.write(f"**Playing:** {ctx.state.playing}")
-        st.write(f"**Audio Processor exists:** {ctx.audio_processor is not None}")
-        
-        if ctx.audio_processor:
-            st.write(f"**Frame count (internal):** {ctx.audio_processor.get_frame_count()}")
-            st.write(f"**Frames list length:** {len(ctx.audio_processor.get_frames())}")
-            st.write(f"**Total samples:** {ctx.audio_processor.get_total_samples()}")
-
-    # Status dan monitoring
-    col1, col2, col3 = st.columns(3)
     
-    with col1:
-        if ctx.state.playing:
-            st.success("🔴 **MEREKAM**")
+    # Jika ada audio baru yang direkam
+    if audio_bytes:
+        # Cek apakah ini audio baru (berbeda dari sebelumnya)
+        if audio_bytes != st.session_state.last_audio:
+            st.session_state.last_audio = audio_bytes
+            
+            st.success("✅ Audio berhasil direkam! Menganalisis...")
+            
+            # Analisis otomatis
+            with st.spinner("🔄 Memproses audio..."):
+                analyze_audio(audio_bytes, source="rekaman")
         else:
-            st.info("⚪ Tidak merekam")
-    
-    with col2:
-        if ctx.audio_processor:
-            total_samples = ctx.audio_processor.get_total_samples()
-            duration = total_samples / 48000
-            st.metric("Durasi", f"{duration:.2f}s")
-        else:
-            st.metric("Durasi", "0.00s")
-    
-    with col3:
-        if ctx.audio_processor:
-            frame_count = len(ctx.audio_processor.get_frames())
-            st.metric("Frames", frame_count)
-        else:
-            st.metric("Frames", 0)
-    
-    # Auto-refresh untuk update real-time
-    if ctx.state.playing:
-        import time
-        time.sleep(0.1)
-        st.session_state.was_playing = True
-        st.rerun()
-    
-    # Deteksi transisi dari playing ke stopped -> auto analyze
-    if st.session_state.was_playing and not ctx.state.playing:
-        st.session_state.was_playing = False
-        if ctx.audio_processor and ctx.audio_processor.get_total_samples() > 0:
-            duration = ctx.audio_processor.get_total_samples() / 48000
-            if duration >= 1.0:  # Minimal duration check
-                st.session_state.should_analyze = True
-                st.info("⏳ Memulai analisis audio setelah STOP...")
-                st.rerun()
-            else:
-                st.warning(f"⚠️ Rekaman terlalu pendek ({duration:.2f}s). Minimal 1 detik. Silakan rekam ulang.")
-    
-    # Progress bar
-    if ctx.audio_processor:
-        duration = ctx.audio_processor.get_total_samples() / 48000
-        min_duration = 1.0
-        progress = min(duration / min_duration, 1.0)
-        st.progress(progress)
-        
-        if duration < min_duration and ctx.state.playing:
-            st.warning(f"⏳ Rekam minimal {min_duration:.0f} detik. Sekarang: {duration:.2f} detik")
-        elif duration >= min_duration:
-            st.success(f"✅ Audio cukup! Tekan STOP lalu klik Analisis Voice")
-    
-    # Troubleshooting tips
-    if ctx.state.playing and ctx.audio_processor and ctx.audio_processor.get_frame_count() == 0:
-        st.error("⚠️ TIDAK ADA FRAME MASUK! Coba:")
-        st.write("1. Refresh halaman (F5)")
-        st.write("2. Pastikan mikrofon tidak digunakan aplikasi lain")
-        st.write("3. Cek browser console (F12) untuk error")
-        st.write("4. Coba browser lain (Chrome/Edge)")
-        st.write("5. Pastikan akses mikrofon diizinkan (klik ikon gembok di address bar)")
-    
-    # Tombol kontrol
-    col_btn1, col_btn2 = st.columns(2)
-    
-    with col_btn1:
-        if st.button("🔄 Clear Buffer"):
-            if ctx.audio_processor:
-                ctx.audio_processor.clear_frames()
-                st.session_state.should_analyze = False
-                st.rerun()
-    
-    with col_btn2:
-        # Tombol manual analisis (opsional)
-        can_analyze = (ctx.audio_processor and 
-                      ctx.audio_processor.get_total_samples() > 0)
-        
-        manual_analyze = st.button(
-            "🔍 Analisis Manual", 
-            disabled=not can_analyze,
-            help="Atau tunggu otomatis setelah STOP"
-        )
+            # Audio sama dengan sebelumnya, tampilkan tombol analisis ulang
+            st.info("ℹ️ Audio sudah dianalisis. Rekam ulang untuk prediksi baru.")
+            
+            if st.button("🔄 Analisis Ulang", type="secondary"):
+                with st.spinner("🔄 Memproses audio..."):
+                    analyze_audio(audio_bytes, source="rekaman")
+    else:
+        st.info("👆 Klik tombol mikrofon di atas untuk mulai merekam")
 
 # ===============================
 # 2️⃣ MODE UPLOAD FILE
 # ===============================
 else:
-    uploaded_file = st.file_uploader("📁 Upload file suara (.wav / .mp3)", type=["wav", "mp3"])
+    st.info("📁 Upload file audio Anda di bawah ini")
+    
+    uploaded_file = st.file_uploader(
+        "Upload file suara (.wav / .mp3)", 
+        type=["wav", "mp3"],
+        help="Pilih file audio yang berisi ucapan 'BUKA' atau 'TUTUP'"
+    )
 
     if uploaded_file is not None:
-        temp_path = "uploaded_audio.wav"
-
-        # Konversi MP3 → WAV jika perlu
-        if uploaded_file.type == "audio/mpeg":
-            audio = AudioSegment.from_mp3(uploaded_file)
-            audio.export(temp_path, format="wav")
-        else:
-            with open(temp_path, "wb") as f:
-                f.write(uploaded_file.read())
-
-        st.audio(temp_path, format="audio/wav")
-
-        if st.button("🔍 Analisis Voice", type="primary"):
-            try:
-                y, sr = librosa.load(temp_path, sr=16000)
-                
-                st.info(f"📊 Durasi: {len(y)/sr:.2f} detik")
-                
-                # Normalisasi
-                y = y / (np.max(np.abs(y)) + 1e-8)
-                
-                # Trim
-                y_trimmed, _ = librosa.effects.trim(y, top_db=20)
-                
-                # MFCC
-                mfcc = librosa.feature.mfcc(y=y_trimmed, sr=sr, n_mfcc=13)
-                features = np.mean(mfcc.T, axis=0).reshape(1, -1)
-                features_scaled = scaler.transform(features)
-                
-                # Prediksi
-                pred = model.predict(features_scaled)
-                result = "BUKA" if pred[0] == 0 else "TUTUP"
-                
-                st.success(f"# 🎧 Prediksi: **{result}**")
-                
-                try:
-                    proba = model.predict_proba(features_scaled)
-                    confidence = np.max(proba) * 100
-                    st.info(f"**Confidence:** {confidence:.1f}%")
-                    
-                    with st.expander("📊 Detail"):
-                        st.write(f"- BUKA: {proba[0][0]*100:.1f}%")
-                        st.write(f"- TUTUP: {proba[0][1]*100:.1f}%")
-                except:
-                    pass
-                
-            except Exception as e:
-                st.error(f"❌ Error: {str(e)}")
-
-# ===============================
-# 🔹 Trigger Analysis for Rekam Langsung
-# ===============================
-analyze_clicked = st.session_state.should_analyze or manual_analyze
-
-if analyze_clicked:
-    st.session_state.should_analyze = False  # Reset flag
-    if mode == "🎙️ Rekam langsung" and ctx.audio_processor and ctx.audio_processor.get_total_samples() > 0:
-        frames = ctx.audio_processor.get_frames()
+        # Baca file
+        audio_bytes = uploaded_file.read()
         
-        if len(frames) == 0:
-            st.error("❌ Tidak ada audio! Troubleshooting:")
-            st.write("✓ Apakah tombol START sudah ditekan?")
-            st.write("✓ Apakah ada tulisan 'MEREKAM' berwarna hijau?")
-            st.write("✓ Apakah browser meminta izin mikrofon?")
-            st.write("✓ Apakah Frame count > 0 saat merekam?")
-        else:
-            try:
-                with st.spinner("🔄 Memproses audio..."):
-                    # Gabungkan frames
-                    audio_data = np.concatenate(frames)
-                    original_sr = 48000
-                    
-                    duration = len(audio_data) / original_sr
-                    st.info(f"📊 Audio terekam: {duration:.2f} detik ({len(audio_data)} samples, {len(frames)} frames)")
-                    
-                    # Resample ke 16kHz
-                    target_sr = 16000
-                    audio_resampled = librosa.resample(
-                        audio_data, 
-                        orig_sr=original_sr, 
-                        target_sr=target_sr
-                    )
-                    
-                    # Normalisasi
-                    audio_resampled = audio_resampled / (np.max(np.abs(audio_resampled)) + 1e-8)
-                    
-                    # Simpan dan tampilkan
-                    sf.write("recorded_audio.wav", audio_resampled, target_sr)
-                    st.audio("recorded_audio.wav", format="audio/wav")
-                    
-                    # Trim silence
-                    audio_trimmed, _ = librosa.effects.trim(audio_resampled, top_db=20)
-                    st.write(f"✂️ Setelah trim: {len(audio_trimmed)/target_sr:.2f} detik")
-                    
-                    if len(audio_trimmed) < 0.3 * target_sr:
-                        st.warning("⚠️ Audio terlalu pendek setelah trim. Mungkin hanya noise. Coba ucapkan lebih keras.")
-                    else:
-                        # Ekstraksi MFCC
-                        mfcc = librosa.feature.mfcc(y=audio_trimmed, sr=target_sr, n_mfcc=13)
-                        features = np.mean(mfcc.T, axis=0).reshape(1, -1)
-                        
-                        st.write(f"🔍 MFCC shape: {mfcc.shape}")
-                        
-                        # Prediksi
-                        features_scaled = scaler.transform(features)
-                        pred = model.predict(features_scaled)
-                        result = "BUKA" if pred[0] == 0 else "TUTUP"
-                        
-                        # Tampilkan hasil
-                        st.success(f"# 🎧 Prediksi: **{result}**")
-                        
-                        # Coba ambil confidence
-                        try:
-                            proba = model.predict_proba(features_scaled)
-                            confidence = np.max(proba) * 100
-                            st.info(f"**Confidence:** {confidence:.1f}%")
-                            
-                            with st.expander("📊 Detail Probabilitas"):
-                                st.write(f"- BUKA: {proba[0][0]*100:.1f}%")
-                                st.write(f"- TUTUP: {proba[0][1]*100:.1f}%")
-                        except:
-                            pass
-                        
-                        # Clear buffer setelah analisis
-                        ctx.audio_processor.clear_frames()
-                    
-            except Exception as e:
-                st.error(f"❌ Error: {str(e)}")
-                import traceback
-                with st.expander("🐛 Debug Info"):
-                    st.code(traceback.format_exc())
+        # Preview audio
+        st.audio(audio_bytes, format=f"audio/{uploaded_file.type.split('/')[-1]}")
+        
+        # Tombol analisis
+        if st.button("🔍 Analisis Audio", type="primary"):
+            with st.spinner("🔄 Memproses audio..."):
+                # Konversi ke WAV jika MP3
+                if uploaded_file.type == "audio/mpeg":
+                    audio_segment = AudioSegment.from_mp3(io.BytesIO(audio_bytes))
+                    wav_io = io.BytesIO()
+                    audio_segment.export(wav_io, format="wav")
+                    audio_bytes = wav_io.getvalue()
+                
+                analyze_audio(audio_bytes, source="upload")
+
+# ===============================
+# 🔹 Footer & Tips
+# ===============================
+st.divider()
+with st.expander("💡 Tips untuk Hasil Terbaik"):
+    st.write("""
+    **Untuk hasil prediksi yang akurat:**
+    1. 🔊 Ucapkan kata dengan **jelas dan lantang**
+    2. ⏱️ Durasi minimal **1 detik**, ideal **2-3 detik**
+    3. 🤫 Rekam di **tempat yang tenang** (minimal noise)
+    4. 🎤 Jarak mikrofon **10-30 cm** dari mulut
+    5. 🗣️ Intonasi **natural**, tidak terlalu cepat/lambat
+    6. 🔁 Jika confidence rendah, coba **rekam ulang**
+    """)
+
+with st.expander("❓ Troubleshooting"):
+    st.write("""
+    **Jika mengalami masalah:**
+    - **Audio tidak terekam**: Pastikan browser mengizinkan akses mikrofon
+    - **Prediksi salah**: Coba ucapkan lebih jelas atau rekam di tempat lebih tenang
+    - **Confidence rendah**: Audio mungkin terlalu pendek atau terlalu banyak noise
+    - **Error saat analisis**: Coba refresh halaman (F5) atau gunakan mode Upload File
+    """)
