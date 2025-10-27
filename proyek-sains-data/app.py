@@ -1,12 +1,13 @@
 import streamlit as st
-from streamlit_webrtc import webrtc_streamer, AudioProcessorBase, RTCConfiguration, WebRtcMode
 import numpy as np
 import joblib
 import librosa
-import os
-import av
 import soundfile as sf
-from pydub import AudioSegment  # untuk konversi mp3 → wav
+import os
+import tempfile
+from pydub import AudioSegment
+import sounddevice as sd
+import time
 
 # ===============================
 # 🔹 Judul & Deskripsi
@@ -24,69 +25,41 @@ model = joblib.load(model_path)
 scaler = joblib.load(scaler_path)
 
 # ===============================
-# 🔹 Konfigurasi WebRTC
-# ===============================
-rtc_config = RTCConfiguration({
-    "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
-})
-
-# ===============================
 # 🔹 Pilihan Metode Input
 # ===============================
-mode = st.radio("🎧 Pilih metode input suara:", ["🎙️ Rekam langsung", "📁 Upload file (.wav / .mp3)"])
+mode = st.radio("🎧 Pilih metode input suara:", ["🎙️ Rekam selama 3 detik", "📁 Upload file (.wav / .mp3)"])
 
 # ===============================
-# 1️⃣ MODE REKAM LANGSUNG
+# 1️⃣ MODE REKAM SELAMA 3 DETIK
 # ===============================
-if mode == "🎙️ Rekam langsung":
-    st.info("Tekan **Start** untuk mulai merekam suara Anda. Setelah selesai, tekan **Analisis Voice**.")
+if mode == "🎙️ Rekam selama 3 detik":
+    st.info("Klik tombol di bawah ini untuk merekam suara Anda selama 3 detik...")
 
-    class AudioProcessor(AudioProcessorBase):
-        def __init__(self):
-            self.frames = []
+    if st.button("🎙️ Rekam Suara"):
+        sr = 16000  # sample rate
+        duration = 3  # detik
 
-        def recv_audio(self, frame: av.AudioFrame) -> av.AudioFrame:
-            audio = frame.to_ndarray()
-            # Konversi ke mono
-            if audio.ndim > 1:
-                audio = np.mean(audio, axis=1)
-            self.frames.append(audio.astype(np.float32))
-            return frame
+        st.write("⏺️ Merekam suara selama 3 detik...")
+        recording = sd.rec(int(duration * sr), samplerate=sr, channels=1, dtype='float32')
+        sd.wait()  # tunggu sampai selesai merekam
+        st.success("✅ Rekaman selesai!")
 
-    ctx = webrtc_streamer(
-        key="voice-cmd",
-        mode=WebRtcMode.SENDRECV,  # Gunakan SENDRECV agar audio stream lebih stabil
-        audio_processor_factory=AudioProcessor,
-        rtc_configuration=rtc_config,
-        media_stream_constraints={"audio": True, "video": False},
-    )
+        # Simpan hasil rekaman sementara
+        temp_wav = "recorded_audio.wav"
+        sf.write(temp_wav, recording, sr)
 
-    # Setelah user selesai bicara
-    if ctx and ctx.state.playing and ctx.audio_processor:
-        if st.button("🔍 Analisis Voice"):
-            if not ctx.audio_processor.frames:
-                st.warning("⚠️ Tidak ada suara yang terekam. Coba ulangi.")
-            else:
-                # Gabungkan frame audio
-                audio_data = np.concatenate(ctx.audio_processor.frames)
-                sr = 16000
+        # Tampilkan player audio
+        st.audio(temp_wav, format="audio/wav")
 
-                # Normalisasi panjang minimal
-                if len(audio_data) < sr:
-                    st.warning("⚠️ Suara terlalu singkat. Ucapkan 'Buka' atau 'Tutup' dengan lebih lama.")
-                else:
-                    # Simpan sementara hasil rekaman (opsional)
-                    sf.write("recorded_audio.wav", audio_data, sr)
-                    st.audio("recorded_audio.wav", format="audio/wav")
+        # Ekstraksi MFCC dan Prediksi
+        y, _ = librosa.load(temp_wav, sr=16000)
+        mfcc = librosa.feature.mfcc(y=y, sr=16000, n_mfcc=13)
+        features = np.mean(mfcc.T, axis=0).reshape(1, -1)
+        features = scaler.transform(features)
+        pred = model.predict(features)
+        result = "BUKA" if pred[0] == 0 else "TUTUP"
 
-                    # Ekstraksi MFCC
-                    mfcc = librosa.feature.mfcc(y=audio_data, sr=sr, n_mfcc=13)
-                    features = np.mean(mfcc.T, axis=0).reshape(1, -1)
-                    features = scaler.transform(features)
-                    pred = model.predict(features)
-                    result = "BUKA" if pred[0] == 0 else "TUTUP"
-
-                    st.success(f"🎧 Prediksi: {result}")
+        st.success(f"🎧 Prediksi: {result}")
 
 # ===============================
 # 2️⃣ MODE UPLOAD FILE
@@ -95,26 +68,24 @@ else:
     uploaded_file = st.file_uploader("📁 Upload file suara (.wav / .mp3)", type=["wav", "mp3"])
 
     if uploaded_file is not None:
-        temp_path = "uploaded_audio.wav"
+        # Simpan sementara ke file
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
+            temp_path = tmp.name
 
-        # Jika file MP3 → konversi ke WAV
-        if uploaded_file.type == "audio/mpeg":
-            audio = AudioSegment.from_mp3(uploaded_file)
-            audio.export(temp_path, format="wav")
-        else:
-            with open(temp_path, "wb") as f:
-                f.write(uploaded_file.read())
+        # Gunakan pydub agar mendukung .mp3 dan .wav
+        audio = AudioSegment.from_file(uploaded_file)
+        audio = audio.set_frame_rate(16000).set_channels(1)
+        audio.export(temp_path, format="wav")
 
         # Tampilkan player
         st.audio(temp_path, format="audio/wav")
 
-        # Analisis
-        if st.button("🔍 Analisis Voice"):
-            y, sr = librosa.load(temp_path, sr=16000)
-            mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13)
-            features = np.mean(mfcc.T, axis=0).reshape(1, -1)
-            features = scaler.transform(features)
-            pred = model.predict(features)
-            result = "BUKA" if pred[0] == 0 else "TUTUP"
+        # Ekstraksi MFCC dan Prediksi
+        y, sr = librosa.load(temp_path, sr=16000)
+        mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13)
+        features = np.mean(mfcc.T, axis=0).reshape(1, -1)
+        features = scaler.transform(features)
+        pred = model.predict(features)
+        result = "BUKA" if pred[0] == 0 else "TUTUP"
 
-            st.success(f"🎧 Prediksi: {result}")
+        st.success(f"🎧 Prediksi: {result}")
