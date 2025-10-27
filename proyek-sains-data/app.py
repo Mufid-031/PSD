@@ -2,11 +2,15 @@ import streamlit as st
 import numpy as np
 import librosa
 import joblib
+import os
 
 st.title("🎙️ Voice Command Classifier: BUKA / TUTUP")
 
-model = joblib.load("model_knn_voice.pkl")
-scaler = joblib.load("scaler.pkl")
+model_path = os.path.join(os.path.dirname(__file__), "model_knn_voice.pkl")
+scaler_path = os.path.join(os.path.dirname(__file__), "scaler.pkl")
+
+model = joblib.load(model_path)
+scaler = joblib.load(scaler_path)
 
 def extract_features(file):
     y, sr = librosa.load(file, sr=None)
