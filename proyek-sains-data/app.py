@@ -183,60 +183,24 @@ if mode == "🎙️ Rekam langsung":
         st.rerun()
     
     # Deteksi transisi dari playing ke stopped -> auto analyze
-    if st.session_state.was_playing and not ctx.state.playing:
-        st.session_state.was_playing = False
-        if ctx.audio_processor and ctx.audio_processor.get_total_samples() > 0:
-            st.session_state.should_analyze = True
-            st.rerun()
-    
-    # Progress bar
-    if ctx.audio_processor:
+if st.session_state.was_playing and not ctx.state.playing:
+    st.session_state.was_playing = False
+    if ctx.audio_processor and ctx.audio_processor.get_total_samples() > 0:
         duration = ctx.audio_processor.get_total_samples() / 48000
-        min_duration = 1.0
-        progress = min(duration / min_duration, 1.0)
-        st.progress(progress)
-        
-        if duration < min_duration and ctx.state.playing:
-            st.warning(f"⏳ Rekam minimal {min_duration:.0f} detik. Sekarang: {duration:.2f} detik")
-        elif duration >= min_duration:
-            st.success(f"✅ Audio cukup! Tekan STOP lalu klik Analisis Voice")
-    
-    # Troubleshooting tips
-    if ctx.state.playing and ctx.audio_processor and ctx.audio_processor.get_frame_count() == 0:
-        st.error("⚠️ TIDAK ADA FRAME MASUK! Coba:")
-        st.write("1. Refresh halaman (F5)")
-        st.write("2. Pastikan mikrofon tidak digunakan aplikasi lain")
-        st.write("3. Cek browser console (F12) untuk error")
-        st.write("4. Coba browser lain (Chrome/Edge)")
-        st.write("5. Pastikan akses mikrofon diizinkan (klik ikon gembok di address bar)")
-    
-    # Tombol kontrol
-    col_btn1, col_btn2 = st.columns(2)
-    
-    with col_btn1:
-        if st.button("🔄 Clear Buffer"):
-            if ctx.audio_processor:
-                ctx.audio_processor.clear_frames()
-                st.session_state.should_analyze = False
-                st.rerun()
-    
-    with col_btn2:
-        # Tombol manual analisis (opsional)
-        can_analyze = (ctx.audio_processor and 
-                      ctx.audio_processor.get_total_samples() > 0)
-        
-        manual_analyze = st.button(
-            "🔍 Analisis Manual", 
-            disabled=not can_analyze,
-            help="Atau tunggu otomatis setelah STOP"
-        )
-    
-    # Trigger analisis (otomatis atau manual)
-    analyze_clicked = st.session_state.should_analyze or manual_analyze
-    
-    if analyze_clicked:
-        st.session_state.should_analyze = False  # Reset flag
-    if ctx.audio_processor and analyze_clicked:
+        if duration >= 1.0:  # Minimal duration check
+            st.session_state.should_analyze = True
+            st.info("⏳ Memulai analisis audio setelah STOP...")
+            st.rerun()
+        else:
+            st.warning(f"⚠️ Rekaman terlalu pendek ({duration:.2f}s). Minimal 1 detik. Silakan rekam ulang.")
+
+# Trigger analisis (otomatis atau manual)
+analyze_clicked = st.session_state.should_analyze or manual_analyze
+
+if analyze_clicked and not st.session_state.get("analysis_done", False):
+    st.session_state.analysis_done = True
+    st.session_state.should_analyze = False  # Reset flag
+    if ctx.audio_processor and ctx.audio_processor.get_total_samples() > 0:
         frames = ctx.audio_processor.get_frames()
         
         if len(frames) == 0:
@@ -285,24 +249,25 @@ if mode == "🎙️ Rekam langsung":
                         
                         # Prediksi
                         features_scaled = scaler.transform(features)
-                        pred = model.predict(features_scaled)
-                        
-                        result = "BUKA" if pred[0] == 0 else "TUTUP"
-                        
-                        # Tampilkan hasil
-                        st.success(f"# 🎧 Prediksi: **{result}**")
-                        
-                        # Coba ambil confidence
                         try:
-                            proba = model.predict_proba(features_scaled)
-                            confidence = np.max(proba) * 100
-                            st.info(f"**Confidence:** {confidence:.1f}%")
+                            pred = model.predict(features_scaled)
+                            result = "BUKA" if pred[0] == 0 else "TUTUP"
+                            st.success(f"# 🎧 Prediksi: **{result}**")
                             
-                            with st.expander("📊 Detail Probabilitas"):
-                                st.write(f"- BUKA: {proba[0][0]*100:.1f}%")
-                                st.write(f"- TUTUP: {proba[0][1]*100:.1f}%")
-                        except:
-                            pass
+                            # Confidence
+                            try:
+                                proba = model.predict_proba(features_scaled)
+                                confidence = np.max(proba) * 100
+                                st.info(f"**Confidence:** {confidence:.1f}%")
+                                
+                                with st.expander("📊 Detail Probabilitas"):
+                                    st.write(f"- BUKA: {proba[0][0]*100:.1f}%")
+                                    st.write(f"- TUTUP: {proba[0][1]*100:.1f}%")
+                            except:
+                                pass
+                        except Exception as e:
+                            st.error(f"❌ Gagal memprediksi: {str(e)}")
+                            logger.error(f"Prediction error: {e}")
                         
                         # Clear buffer setelah analisis
                         ctx.audio_processor.clear_frames()
@@ -312,6 +277,8 @@ if mode == "🎙️ Rekam langsung":
                 import traceback
                 with st.expander("🐛 Debug Info"):
                     st.code(traceback.format_exc())
+    
+    st.session_state.analysis_done = False  # Reset flag after analysis
 
 # ===============================
 # 2️⃣ MODE UPLOAD FILE
