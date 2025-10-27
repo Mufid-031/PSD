@@ -3,6 +3,5 @@ numpy
 pandas
 matplotlib
 psycopg2-binary
-psycopg2
 sqlalchemy
 python-dotenv
