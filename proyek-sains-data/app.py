@@ -13,11 +13,12 @@ model = joblib.load(model_path)
 scaler = joblib.load(scaler_path)
 
 st.title("🎙️ Voice Command Classifier: BUKA / TUTUP")
-
 st.write("Tekan tombol **Start** lalu ucapkan kata 'Buka' atau 'Tutup'...")
 
 # Konfigurasi WebRTC
-rtc_config = RTCConfiguration({"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]})
+rtc_config = RTCConfiguration({
+    "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+})
 
 class AudioProcessor(AudioProcessorBase):
     def __init__(self):
