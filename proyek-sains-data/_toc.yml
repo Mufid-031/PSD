@@ -10,3 +10,4 @@ chapters:
     - file: dataExploration
     - file: oversampling
 - file: timeSeries
+- file: voiceDetection
