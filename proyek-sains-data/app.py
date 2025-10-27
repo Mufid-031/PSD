@@ -3,10 +3,14 @@ from streamlit_webrtc import webrtc_streamer, AudioProcessorBase, RTCConfigurati
 import numpy as np
 import joblib
 import librosa
+import os
 
+
+model_path = os.path.join(os.path.dirname(__file__), "model_knn_voice.pkl")
+scaler_path = os.path.join(os.path.dirname(__file__), "scaler.pkl")
 # Load model dan scaler
-model = joblib.load("model_knn_voice.pkl")
-scaler = joblib.load("scaler.pkl")
+model = joblib.load(model_path)
+scaler = joblib.load(scaler_path)
 
 st.title("🎙️ Voice Command Classifier: BUKA / TUTUP")
 
