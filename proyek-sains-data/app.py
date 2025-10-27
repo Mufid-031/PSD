@@ -1,5 +1,5 @@
 import streamlit as st
-from streamlit_webrtc import webrtc_streamer, AudioProcessorBase, RTCConfiguration
+from streamlit_webrtc import webrtc_streamer, AudioProcessorBase, RTCConfiguration, WebRtcMode
 import numpy as np
 import joblib
 import librosa
@@ -33,12 +33,11 @@ class AudioProcessor(AudioProcessorBase):
 # Jalankan WebRTC streamer
 ctx = webrtc_streamer(
     key="voice-cmd",
-    mode="SENDONLY",  # 🟢 gunakan string, bukan konstanta
+    mode=WebRtcMode.SENDONLY,  # ✅ gunakan konstanta yang benar
     audio_processor_factory=AudioProcessor,
     rtc_configuration=rtc_config,
     media_stream_constraints={"audio": True, "video": False},
 )
-
 
 if ctx.audio_processor:
     if st.button("🔍 Analisis Voice"):
