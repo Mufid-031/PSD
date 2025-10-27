@@ -6,3 +6,4 @@ joblib
 soundfile
 sounddevice
 pydub
+audio-recorder-streamlit
