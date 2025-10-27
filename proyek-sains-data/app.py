@@ -7,7 +7,7 @@ import os
 import av
 import soundfile as sf
 from pydub import AudioSegment
-import time
+import threading
 
 # ===============================
 # 🔹 Judul & Deskripsi
@@ -32,16 +32,6 @@ rtc_config = RTCConfiguration({
 })
 
 # ===============================
-# 🔹 Session State untuk Audio Buffer
-# ===============================
-if "audio_buffer" not in st.session_state:
-    st.session_state.audio_buffer = []
-if "recording_start" not in st.session_state:
-    st.session_state.recording_start = None
-if "total_samples" not in st.session_state:
-    st.session_state.total_samples = 0
-
-# ===============================
 # 🔹 Pilihan Metode Input
 # ===============================
 mode = st.radio("🎧 Pilih metode input suara:", ["🎙️ Rekam langsung", "📁 Upload file (.wav / .mp3)"])
@@ -50,24 +40,44 @@ mode = st.radio("🎧 Pilih metode input suara:", ["🎙️ Rekam langsung", "�
 # 1️⃣ MODE REKAM LANGSUNG
 # ===============================
 if mode == "🎙️ Rekam langsung":
-    st.info("1️⃣ Tekan **START** → 2️⃣ Ucapkan 'BUKA' atau 'TUTUP' selama 2-3 detik → 3️⃣ Tekan **Analisis Voice**")
+    st.info("1️⃣ Tekan **START** → 2️⃣ Ucapkan 'BUKA' atau 'TUTUP' 2-3 detik → 3️⃣ Tekan **STOP** → 4️⃣ Klik **Analisis Voice**")
     
+    # Audio Processor dengan buffer internal dan lock
     class AudioProcessor(AudioProcessorBase):
+        def __init__(self):
+            self.frames = []
+            self.lock = threading.Lock()
+            self.sample_rate = 48000
+            
         def recv(self, frame: av.AudioFrame) -> av.AudioFrame:
-            # Konversi frame ke numpy array
             sound = frame.to_ndarray()
             
-            # Konversi ke mono jika stereo
+            # Konversi ke mono
             if len(sound.shape) == 2:
                 sound = sound.mean(axis=1)
             
             sound = sound.flatten().astype(np.float32)
             
-            # Simpan ke session state buffer (persistent across reruns)
-            st.session_state.audio_buffer.append(sound)
-            st.session_state.total_samples += len(sound)
+            # Thread-safe append
+            with self.lock:
+                self.frames.append(sound)
             
             return frame
+        
+        def get_frames(self):
+            """Ambil semua frames dengan thread-safe"""
+            with self.lock:
+                return self.frames.copy()
+        
+        def get_total_samples(self):
+            """Hitung total samples"""
+            with self.lock:
+                return sum(len(f) for f in self.frames)
+        
+        def clear_frames(self):
+            """Clear frames"""
+            with self.lock:
+                self.frames = []
 
     # WebRTC Streamer
     ctx = webrtc_streamer(
@@ -79,58 +89,80 @@ if mode == "🎙️ Rekam langsung":
         async_processing=True,
     )
 
-    # Update recording start time
-    if ctx.state.playing and st.session_state.recording_start is None:
-        st.session_state.recording_start = time.time()
-    elif not ctx.state.playing:
-        st.session_state.recording_start = None
-
-    # Status Recording
-    col1, col2 = st.columns(2)
+    # Status dan monitoring
+    col1, col2, col3 = st.columns(3)
+    
     with col1:
         if ctx.state.playing:
-            duration = time.time() - st.session_state.recording_start if st.session_state.recording_start else 0
-            st.success(f"🔴 **MEREKAM** ({duration:.1f}s)")
+            st.success("🔴 **MEREKAM**")
         else:
-            st.info("⚪ Tekan START untuk mulai")
+            st.info("⚪ Tidak merekam")
     
     with col2:
-        samples_collected = st.session_state.total_samples
-        duration_seconds = samples_collected / 48000 if samples_collected > 0 else 0
-        st.metric("Audio Terekam", f"{duration_seconds:.2f} detik")
+        if ctx.audio_processor:
+            total_samples = ctx.audio_processor.get_total_samples()
+            duration = total_samples / 48000
+            st.metric("Durasi", f"{duration:.2f}s")
+        else:
+            st.metric("Durasi", "0.00s")
+    
+    with col3:
+        if ctx.audio_processor:
+            frame_count = len(ctx.audio_processor.get_frames())
+            st.metric("Frames", frame_count)
+        else:
+            st.metric("Frames", 0)
     
     # Progress bar
-    min_duration = 1.0  # Minimal 1 detik
-    progress = min(duration_seconds / min_duration, 1.0)
-    st.progress(progress)
+    if ctx.audio_processor:
+        duration = ctx.audio_processor.get_total_samples() / 48000
+        min_duration = 1.0
+        progress = min(duration / min_duration, 1.0)
+        st.progress(progress)
+        
+        if duration < min_duration and ctx.state.playing:
+            st.warning(f"⏳ Rekam minimal {min_duration:.0f} detik. Sekarang: {duration:.2f} detik")
+        elif duration >= min_duration and ctx.state.playing:
+            st.success(f"✅ Audio cukup! Tekan STOP lalu klik Analisis Voice")
     
-    if duration_seconds < min_duration:
-        st.warning(f"⏳ Rekam minimal {min_duration} detik. Sekarang: {duration_seconds:.2f} detik")
+    # Tombol kontrolu
+    col_btn1, col_btn2 = st.columns(2)
     
-    # Tombol Reset
-    if st.button("🔄 Reset Recording"):
-        st.session_state.audio_buffer = []
-        st.session_state.total_samples = 0
-        st.rerun()
+    with col_btn1:
+        if st.button("🔄 Clear Buffer"):
+            if ctx.audio_processor:
+                ctx.audio_processor.clear_frames()
+                st.rerun()
     
-    # Tombol Analisis
-    analyze_button = st.button(
-        "🔍 Analisis Voice", 
-        disabled=(duration_seconds < min_duration),
-        type="primary"
-    )
+    with col_btn2:
+        can_analyze = (ctx.audio_processor and 
+                      ctx.audio_processor.get_total_samples() > 0 and
+                      not ctx.state.playing)
+        
+        analyze_clicked = st.button(
+            "🔍 Analisis Voice", 
+            disabled=not can_analyze,
+            type="primary"
+        )
     
-    if analyze_button:
-        if len(st.session_state.audio_buffer) == 0:
-            st.error("❌ Buffer audio kosong! Pastikan mikrofon aktif.")
+    # Proses analisis
+    if analyze_clicked and ctx.audio_processor:
+        frames = ctx.audio_processor.get_frames()
+        
+        if len(frames) == 0:
+            st.error("❌ Tidak ada audio! Pastikan:")
+            st.write("- Mikrofon sudah diizinkan")
+            st.write("- Tombol START sudah ditekan")
+            st.write("- Ada suara yang masuk")
         else:
             try:
-                with st.spinner("Menganalisis audio..."):
-                    # Gabungkan semua audio chunks
-                    audio_data = np.concatenate(st.session_state.audio_buffer)
-                    original_sr = 48000  # WebRTC default sample rate
+                with st.spinner("🔄 Memproses audio..."):
+                    # Gabungkan frames
+                    audio_data = np.concatenate(frames)
+                    original_sr = 48000
                     
-                    st.info(f"📊 Total audio: {len(audio_data)} samples ({len(audio_data)/original_sr:.2f} detik)")
+                    duration = len(audio_data) / original_sr
+                    st.info(f"📊 Audio terekam: {duration:.2f} detik ({len(audio_data)} samples)")
                     
                     # Resample ke 16kHz
                     target_sr = 16000
@@ -143,50 +175,52 @@ if mode == "🎙️ Rekam langsung":
                     # Normalisasi
                     audio_resampled = audio_resampled / (np.max(np.abs(audio_resampled)) + 1e-8)
                     
-                    # Simpan untuk preview
+                    # Simpan dan tampilkan
                     sf.write("recorded_audio.wav", audio_resampled, target_sr)
                     st.audio("recorded_audio.wav", format="audio/wav")
                     
-                    # Trim silence (opsional tapi membantu)
+                    # Trim silence
                     audio_trimmed, _ = librosa.effects.trim(audio_resampled, top_db=20)
+                    st.write(f"✂️ Setelah trim: {len(audio_trimmed)/target_sr:.2f} detik")
                     
-                    st.write(f"✂️ Audio setelah trim: {len(audio_trimmed)/target_sr:.2f} detik")
-                    
-                    # Ekstraksi MFCC
-                    mfcc = librosa.feature.mfcc(y=audio_trimmed, sr=target_sr, n_mfcc=13)
-                    features = np.mean(mfcc.T, axis=0).reshape(1, -1)
-                    
-                    st.write(f"🔍 MFCC shape: {mfcc.shape}, Features shape: {features.shape}")
-                    
-                    # Prediksi
-                    features_scaled = scaler.transform(features)
-                    pred = model.predict(features_scaled)
-                    
-                    # Cek apakah model punya predict_proba
-                    try:
-                        proba = model.predict_proba(features_scaled)
-                        confidence = np.max(proba) * 100
+                    if len(audio_trimmed) < 0.3 * target_sr:
+                        st.warning("⚠️ Audio terlalu pendek setelah trim. Mungkin hanya noise. Coba ucapkan lebih keras.")
+                    else:
+                        # Ekstraksi MFCC
+                        mfcc = librosa.feature.mfcc(y=audio_trimmed, sr=target_sr, n_mfcc=13)
+                        features = np.mean(mfcc.T, axis=0).reshape(1, -1)
+                        
+                        st.write(f"🔍 MFCC shape: {mfcc.shape}")
+                        
+                        # Prediksi
+                        features_scaled = scaler.transform(features)
+                        pred = model.predict(features_scaled)
                         
                         result = "BUKA" if pred[0] == 0 else "TUTUP"
-                        st.success(f"# 🎧 Prediksi: **{result}**")
-                        st.info(f"Confidence: {confidence:.1f}%")
                         
-                        # Tampilkan probabilitas untuk kedua kelas
-                        st.write("📊 Probabilitas:")
-                        st.write(f"- BUKA: {proba[0][0]*100:.1f}%")
-                        st.write(f"- TUTUP: {proba[0][1]*100:.1f}%")
-                    except:
-                        result = "BUKA" if pred[0] == 0 else "TUTUP"
+                        # Tampilkan hasil
                         st.success(f"# 🎧 Prediksi: **{result}**")
-                    
-                    # Reset buffer setelah analisis
-                    st.session_state.audio_buffer = []
-                    st.session_state.total_samples = 0
+                        
+                        # Coba ambil confidence
+                        try:
+                            proba = model.predict_proba(features_scaled)
+                            confidence = np.max(proba) * 100
+                            st.info(f"**Confidence:** {confidence:.1f}%")
+                            
+                            with st.expander("📊 Detail Probabilitas"):
+                                st.write(f"- BUKA: {proba[0][0]*100:.1f}%")
+                                st.write(f"- TUTUP: {proba[0][1]*100:.1f}%")
+                        except:
+                            pass
+                        
+                        # Clear buffer setelah analisis
+                        ctx.audio_processor.clear_frames()
                     
             except Exception as e:
-                st.error(f"❌ Error saat analisis: {str(e)}")
+                st.error(f"❌ Error: {str(e)}")
                 import traceback
-                st.code(traceback.format_exc())
+                with st.expander("🐛 Debug Info"):
+                    st.code(traceback.format_exc())
 
 # ===============================
 # 2️⃣ MODE UPLOAD FILE
@@ -197,7 +231,7 @@ else:
     if uploaded_file is not None:
         temp_path = "uploaded_audio.wav"
 
-        # Jika file MP3 → konversi ke WAV
+        # Konversi MP3 → WAV jika perlu
         if uploaded_file.type == "audio/mpeg":
             audio = AudioSegment.from_mp3(uploaded_file)
             audio.export(temp_path, format="wav")
@@ -205,43 +239,41 @@ else:
             with open(temp_path, "wb") as f:
                 f.write(uploaded_file.read())
 
-        # Tampilkan player
         st.audio(temp_path, format="audio/wav")
 
-        # Analisis
         if st.button("🔍 Analisis Voice", type="primary"):
             try:
                 y, sr = librosa.load(temp_path, sr=16000)
                 
-                st.info(f"📊 Audio duration: {len(y)/sr:.2f} detik")
+                st.info(f"📊 Durasi: {len(y)/sr:.2f} detik")
                 
                 # Normalisasi
                 y = y / (np.max(np.abs(y)) + 1e-8)
                 
-                # Trim silence
+                # Trim
                 y_trimmed, _ = librosa.effects.trim(y, top_db=20)
                 
+                # MFCC
                 mfcc = librosa.feature.mfcc(y=y_trimmed, sr=sr, n_mfcc=13)
                 features = np.mean(mfcc.T, axis=0).reshape(1, -1)
                 features_scaled = scaler.transform(features)
+                
+                # Prediksi
                 pred = model.predict(features_scaled)
+                result = "BUKA" if pred[0] == 0 else "TUTUP"
+                
+                st.success(f"# 🎧 Prediksi: **{result}**")
                 
                 try:
                     proba = model.predict_proba(features_scaled)
                     confidence = np.max(proba) * 100
+                    st.info(f"**Confidence:** {confidence:.1f}%")
                     
-                    result = "BUKA" if pred[0] == 0 else "TUTUP"
-                    st.success(f"# 🎧 Prediksi: **{result}**")
-                    st.info(f"Confidence: {confidence:.1f}%")
-                    
-                    st.write("📊 Probabilitas:")
-                    st.write(f"- BUKA: {proba[0][0]*100:.1f}%")
-                    st.write(f"- TUTUP: {proba[0][1]*100:.1f}%")
+                    with st.expander("📊 Detail"):
+                        st.write(f"- BUKA: {proba[0][0]*100:.1f}%")
+                        st.write(f"- TUTUP: {proba[0][1]*100:.1f}%")
                 except:
-                    result = "BUKA" if pred[0] == 0 else "TUTUP"
-                    st.success(f"# 🎧 Prediksi: **{result}**")
+                    pass
                 
             except Exception as e:
                 st.error(f"❌ Error: {str(e)}")
-                import traceback
-                st.code(traceback.format_exc())
