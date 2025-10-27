@@ -37,6 +37,14 @@ rtc_config = RTCConfiguration({
 })
 
 # ===============================
+# 🔹 Session State untuk Auto-Analyze
+# ===============================
+if "was_playing" not in st.session_state:
+    st.session_state.was_playing = False
+if "should_analyze" not in st.session_state:
+    st.session_state.should_analyze = False
+
+# ===============================
 # 🔹 Pilihan Metode Input
 # ===============================
 mode = st.radio("🎧 Pilih metode input suara:", ["🎙️ Rekam langsung", "📁 Upload file (.wav / .mp3)"])
@@ -45,7 +53,7 @@ mode = st.radio("🎧 Pilih metode input suara:", ["🎙️ Rekam langsung", "�
 # 1️⃣ MODE REKAM LANGSUNG
 # ===============================
 if mode == "🎙️ Rekam langsung":
-    st.info("1️⃣ Tekan **START** → 2️⃣ Ucapkan 'BUKA' atau 'TUTUP' 2-3 detik → 3️⃣ Tekan **STOP** → 4️⃣ Klik **Analisis Voice**")
+    st.info("1️⃣ Tekan **START** → 2️⃣ Ucapkan 'BUKA' atau 'TUTUP' 2-3 detik → 3️⃣ Tekan **STOP** (otomatis analisis)")
     
     # Audio Processor dengan debugging
     class AudioProcessor(AudioProcessorBase):
@@ -171,7 +179,15 @@ if mode == "🎙️ Rekam langsung":
     if ctx.state.playing:
         import time
         time.sleep(0.1)
+        st.session_state.was_playing = True
         st.rerun()
+    
+    # Deteksi transisi dari playing ke stopped -> auto analyze
+    if st.session_state.was_playing and not ctx.state.playing:
+        st.session_state.was_playing = False
+        if ctx.audio_processor and ctx.audio_processor.get_total_samples() > 0:
+            st.session_state.should_analyze = True
+            st.rerun()
     
     # Progress bar
     if ctx.audio_processor:
@@ -201,22 +217,26 @@ if mode == "🎙️ Rekam langsung":
         if st.button("🔄 Clear Buffer"):
             if ctx.audio_processor:
                 ctx.audio_processor.clear_frames()
+                st.session_state.should_analyze = False
                 st.rerun()
     
     with col_btn2:
-        # Ubah kondisi: cukup ada audio processor dan ada samples
+        # Tombol manual analisis (opsional)
         can_analyze = (ctx.audio_processor and 
                       ctx.audio_processor.get_total_samples() > 0)
         
-        analyze_clicked = st.button(
-            "🔍 Analisis Voice", 
+        manual_analyze = st.button(
+            "🔍 Analisis Manual", 
             disabled=not can_analyze,
-            type="primary",
-            help="Tekan STOP dulu sebelum analisis untuk hasil terbaik"
+            help="Atau tunggu otomatis setelah STOP"
         )
     
-    # Proses analisis
-    if analyze_clicked and ctx.audio_processor:
+    # Trigger analisis (otomatis atau manual)
+    analyze_clicked = st.session_state.should_analyze or manual_analyze
+    
+    if analyze_clicked:
+        st.session_state.should_analyze = False  # Reset flag
+    if ctx.audio_processor and analyze_clicked:
         frames = ctx.audio_processor.get_frames()
         
         if len(frames) == 0:
