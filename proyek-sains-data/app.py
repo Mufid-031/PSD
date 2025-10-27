@@ -8,6 +8,11 @@ import av
 import soundfile as sf
 from pydub import AudioSegment
 import threading
+import logging
+
+# Setup logging untuk debug
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 # ===============================
 # 🔹 Judul & Deskripsi
@@ -42,52 +47,86 @@ mode = st.radio("🎧 Pilih metode input suara:", ["🎙️ Rekam langsung", "�
 if mode == "🎙️ Rekam langsung":
     st.info("1️⃣ Tekan **START** → 2️⃣ Ucapkan 'BUKA' atau 'TUTUP' 2-3 detik → 3️⃣ Tekan **STOP** → 4️⃣ Klik **Analisis Voice**")
     
-    # Audio Processor dengan buffer internal dan lock
+    # Audio Processor dengan debugging
     class AudioProcessor(AudioProcessorBase):
         def __init__(self):
             self.frames = []
             self.lock = threading.Lock()
             self.sample_rate = 48000
+            self.frame_count = 0
+            logger.info("AudioProcessor initialized")
             
         def recv(self, frame: av.AudioFrame) -> av.AudioFrame:
-            sound = frame.to_ndarray()
-            
-            # Konversi ke mono
-            if len(sound.shape) == 2:
-                sound = sound.mean(axis=1)
-            
-            sound = sound.flatten().astype(np.float32)
-            
-            # Thread-safe append
-            with self.lock:
-                self.frames.append(sound)
-            
-            return frame
+            try:
+                self.frame_count += 1
+                
+                # Log setiap 50 frames
+                if self.frame_count % 50 == 0:
+                    logger.info(f"Received frame #{self.frame_count}")
+                
+                sound = frame.to_ndarray()
+                
+                # Debug info
+                logger.debug(f"Frame shape: {sound.shape}, dtype: {sound.dtype}")
+                
+                # Konversi ke mono
+                if len(sound.shape) == 2:
+                    sound = sound.mean(axis=1)
+                
+                sound = sound.flatten().astype(np.float32)
+                
+                # Thread-safe append
+                with self.lock:
+                    self.frames.append(sound)
+                
+                return frame
+            except Exception as e:
+                logger.error(f"Error in recv: {e}")
+                return frame
         
         def get_frames(self):
-            """Ambil semua frames dengan thread-safe"""
             with self.lock:
                 return self.frames.copy()
         
         def get_total_samples(self):
-            """Hitung total samples"""
             with self.lock:
                 return sum(len(f) for f in self.frames)
         
+        def get_frame_count(self):
+            return self.frame_count
+        
         def clear_frames(self):
-            """Clear frames"""
             with self.lock:
                 self.frames = []
+                self.frame_count = 0
 
-    # WebRTC Streamer
+    # WebRTC Streamer dengan konfigurasi lebih eksplisit
     ctx = webrtc_streamer(
-        key="voice-cmd",
+        key="voice-cmd-v2",  # Ganti key untuk reset
         mode=WebRtcMode.SENDRECV,
         audio_processor_factory=AudioProcessor,
         rtc_configuration=rtc_config,
-        media_stream_constraints={"audio": True, "video": False},
+        media_stream_constraints={
+            "audio": {
+                "echoCancellation": True,
+                "noiseSuppression": True,
+                "autoGainControl": True,
+            },
+            "video": False
+        },
         async_processing=True,
     )
+
+    # Debug info
+    with st.expander("🐛 Debug Info", expanded=True):
+        st.write(f"**WebRTC State:** {ctx.state}")
+        st.write(f"**Playing:** {ctx.state.playing}")
+        st.write(f"**Audio Processor exists:** {ctx.audio_processor is not None}")
+        
+        if ctx.audio_processor:
+            st.write(f"**Frame count (internal):** {ctx.audio_processor.get_frame_count()}")
+            st.write(f"**Frames list length:** {len(ctx.audio_processor.get_frames())}")
+            st.write(f"**Total samples:** {ctx.audio_processor.get_total_samples()}")
 
     # Status dan monitoring
     col1, col2, col3 = st.columns(3)
@@ -113,6 +152,12 @@ if mode == "🎙️ Rekam langsung":
         else:
             st.metric("Frames", 0)
     
+    # Auto-refresh untuk update real-time
+    if ctx.state.playing:
+        import time
+        time.sleep(0.1)
+        st.rerun()
+    
     # Progress bar
     if ctx.audio_processor:
         duration = ctx.audio_processor.get_total_samples() / 48000
@@ -122,10 +167,19 @@ if mode == "🎙️ Rekam langsung":
         
         if duration < min_duration and ctx.state.playing:
             st.warning(f"⏳ Rekam minimal {min_duration:.0f} detik. Sekarang: {duration:.2f} detik")
-        elif duration >= min_duration and ctx.state.playing:
+        elif duration >= min_duration:
             st.success(f"✅ Audio cukup! Tekan STOP lalu klik Analisis Voice")
     
-    # Tombol kontrolu
+    # Troubleshooting tips
+    if ctx.state.playing and ctx.audio_processor and ctx.audio_processor.get_frame_count() == 0:
+        st.error("⚠️ TIDAK ADA FRAME MASUK! Coba:")
+        st.write("1. Refresh halaman (F5)")
+        st.write("2. Pastikan mikrofon tidak digunakan aplikasi lain")
+        st.write("3. Cek browser console (F12) untuk error")
+        st.write("4. Coba browser lain (Chrome/Edge)")
+        st.write("5. Pastikan akses mikrofon diizinkan (klik ikon gembok di address bar)")
+    
+    # Tombol kontrol
     col_btn1, col_btn2 = st.columns(2)
     
     with col_btn1:
@@ -150,10 +204,11 @@ if mode == "🎙️ Rekam langsung":
         frames = ctx.audio_processor.get_frames()
         
         if len(frames) == 0:
-            st.error("❌ Tidak ada audio! Pastikan:")
-            st.write("- Mikrofon sudah diizinkan")
-            st.write("- Tombol START sudah ditekan")
-            st.write("- Ada suara yang masuk")
+            st.error("❌ Tidak ada audio! Troubleshooting:")
+            st.write("✓ Apakah tombol START sudah ditekan?")
+            st.write("✓ Apakah ada tulisan 'MEREKAM' berwarna hijau?")
+            st.write("✓ Apakah browser meminta izin mikrofon?")
+            st.write("✓ Apakah Frame count > 0 saat merekam?")
         else:
             try:
                 with st.spinner("🔄 Memproses audio..."):
@@ -162,7 +217,7 @@ if mode == "🎙️ Rekam langsung":
                     original_sr = 48000
                     
                     duration = len(audio_data) / original_sr
-                    st.info(f"📊 Audio terekam: {duration:.2f} detik ({len(audio_data)} samples)")
+                    st.info(f"📊 Audio terekam: {duration:.2f} detik ({len(audio_data)} samples, {len(frames)} frames)")
                     
                     # Resample ke 16kHz
                     target_sr = 16000
