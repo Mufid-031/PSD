@@ -44,6 +44,9 @@ if "was_playing" not in st.session_state:
 if "should_analyze" not in st.session_state:
     st.session_state.should_analyze = False
 
+# Initialize manual_analyze to avoid NameError
+manual_analyze = False
+
 # ===============================
 # 🔹 Pilihan Metode Input
 # ===============================
@@ -183,102 +186,58 @@ if mode == "🎙️ Rekam langsung":
         st.rerun()
     
     # Deteksi transisi dari playing ke stopped -> auto analyze
-if st.session_state.was_playing and not ctx.state.playing:
-    st.session_state.was_playing = False
-    if ctx.audio_processor and ctx.audio_processor.get_total_samples() > 0:
-        duration = ctx.audio_processor.get_total_samples() / 48000
-        if duration >= 1.0:  # Minimal duration check
-            st.session_state.should_analyze = True
-            st.info("⏳ Memulai analisis audio setelah STOP...")
-            st.rerun()
-        else:
-            st.warning(f"⚠️ Rekaman terlalu pendek ({duration:.2f}s). Minimal 1 detik. Silakan rekam ulang.")
-
-# Trigger analisis (otomatis atau manual)
-analyze_clicked = st.session_state.should_analyze or manual_analyze
-
-if analyze_clicked and not st.session_state.get("analysis_done", False):
-    st.session_state.analysis_done = True
-    st.session_state.should_analyze = False  # Reset flag
-    if ctx.audio_processor and ctx.audio_processor.get_total_samples() > 0:
-        frames = ctx.audio_processor.get_frames()
-        
-        if len(frames) == 0:
-            st.error("❌ Tidak ada audio! Troubleshooting:")
-            st.write("✓ Apakah tombol START sudah ditekan?")
-            st.write("✓ Apakah ada tulisan 'MEREKAM' berwarna hijau?")
-            st.write("✓ Apakah browser meminta izin mikrofon?")
-            st.write("✓ Apakah Frame count > 0 saat merekam?")
-        else:
-            try:
-                with st.spinner("🔄 Memproses audio..."):
-                    # Gabungkan frames
-                    audio_data = np.concatenate(frames)
-                    original_sr = 48000
-                    
-                    duration = len(audio_data) / original_sr
-                    st.info(f"📊 Audio terekam: {duration:.2f} detik ({len(audio_data)} samples, {len(frames)} frames)")
-                    
-                    # Resample ke 16kHz
-                    target_sr = 16000
-                    audio_resampled = librosa.resample(
-                        audio_data, 
-                        orig_sr=original_sr, 
-                        target_sr=target_sr
-                    )
-                    
-                    # Normalisasi
-                    audio_resampled = audio_resampled / (np.max(np.abs(audio_resampled)) + 1e-8)
-                    
-                    # Simpan dan tampilkan
-                    sf.write("recorded_audio.wav", audio_resampled, target_sr)
-                    st.audio("recorded_audio.wav", format="audio/wav")
-                    
-                    # Trim silence
-                    audio_trimmed, _ = librosa.effects.trim(audio_resampled, top_db=20)
-                    st.write(f"✂️ Setelah trim: {len(audio_trimmed)/target_sr:.2f} detik")
-                    
-                    if len(audio_trimmed) < 0.3 * target_sr:
-                        st.warning("⚠️ Audio terlalu pendek setelah trim. Mungkin hanya noise. Coba ucapkan lebih keras.")
-                    else:
-                        # Ekstraksi MFCC
-                        mfcc = librosa.feature.mfcc(y=audio_trimmed, sr=target_sr, n_mfcc=13)
-                        features = np.mean(mfcc.T, axis=0).reshape(1, -1)
-                        
-                        st.write(f"🔍 MFCC shape: {mfcc.shape}")
-                        
-                        # Prediksi
-                        features_scaled = scaler.transform(features)
-                        try:
-                            pred = model.predict(features_scaled)
-                            result = "BUKA" if pred[0] == 0 else "TUTUP"
-                            st.success(f"# 🎧 Prediksi: **{result}**")
-                            
-                            # Confidence
-                            try:
-                                proba = model.predict_proba(features_scaled)
-                                confidence = np.max(proba) * 100
-                                st.info(f"**Confidence:** {confidence:.1f}%")
-                                
-                                with st.expander("📊 Detail Probabilitas"):
-                                    st.write(f"- BUKA: {proba[0][0]*100:.1f}%")
-                                    st.write(f"- TUTUP: {proba[0][1]*100:.1f}%")
-                            except:
-                                pass
-                        except Exception as e:
-                            st.error(f"❌ Gagal memprediksi: {str(e)}")
-                            logger.error(f"Prediction error: {e}")
-                        
-                        # Clear buffer setelah analisis
-                        ctx.audio_processor.clear_frames()
-                    
-            except Exception as e:
-                st.error(f"❌ Error: {str(e)}")
-                import traceback
-                with st.expander("🐛 Debug Info"):
-                    st.code(traceback.format_exc())
+    if st.session_state.was_playing and not ctx.state.playing:
+        st.session_state.was_playing = False
+        if ctx.audio_processor and ctx.audio_processor.get_total_samples() > 0:
+            duration = ctx.audio_processor.get_total_samples() / 48000
+            if duration >= 1.0:  # Minimal duration check
+                st.session_state.should_analyze = True
+                st.info("⏳ Memulai analisis audio setelah STOP...")
+                st.rerun()
+            else:
+                st.warning(f"⚠️ Rekaman terlalu pendek ({duration:.2f}s). Minimal 1 detik. Silakan rekam ulang.")
     
-    st.session_state.analysis_done = False  # Reset flag after analysis
+    # Progress bar
+    if ctx.audio_processor:
+        duration = ctx.audio_processor.get_total_samples() / 48000
+        min_duration = 1.0
+        progress = min(duration / min_duration, 1.0)
+        st.progress(progress)
+        
+        if duration < min_duration and ctx.state.playing:
+            st.warning(f"⏳ Rekam minimal {min_duration:.0f} detik. Sekarang: {duration:.2f} detik")
+        elif duration >= min_duration:
+            st.success(f"✅ Audio cukup! Tekan STOP lalu klik Analisis Voice")
+    
+    # Troubleshooting tips
+    if ctx.state.playing and ctx.audio_processor and ctx.audio_processor.get_frame_count() == 0:
+        st.error("⚠️ TIDAK ADA FRAME MASUK! Coba:")
+        st.write("1. Refresh halaman (F5)")
+        st.write("2. Pastikan mikrofon tidak digunakan aplikasi lain")
+        st.write("3. Cek browser console (F12) untuk error")
+        st.write("4. Coba browser lain (Chrome/Edge)")
+        st.write("5. Pastikan akses mikrofon diizinkan (klik ikon gembok di address bar)")
+    
+    # Tombol kontrol
+    col_btn1, col_btn2 = st.columns(2)
+    
+    with col_btn1:
+        if st.button("🔄 Clear Buffer"):
+            if ctx.audio_processor:
+                ctx.audio_processor.clear_frames()
+                st.session_state.should_analyze = False
+                st.rerun()
+    
+    with col_btn2:
+        # Tombol manual analisis (opsional)
+        can_analyze = (ctx.audio_processor and 
+                      ctx.audio_processor.get_total_samples() > 0)
+        
+        manual_analyze = st.button(
+            "🔍 Analisis Manual", 
+            disabled=not can_analyze,
+            help="Atau tunggu otomatis setelah STOP"
+        )
 
 # ===============================
 # 2️⃣ MODE UPLOAD FILE
@@ -335,3 +294,86 @@ else:
                 
             except Exception as e:
                 st.error(f"❌ Error: {str(e)}")
+
+# ===============================
+# 🔹 Trigger Analysis for Rekam Langsung
+# ===============================
+analyze_clicked = st.session_state.should_analyze or manual_analyze
+
+if analyze_clicked:
+    st.session_state.should_analyze = False  # Reset flag
+    if mode == "🎙️ Rekam langsung" and ctx.audio_processor and ctx.audio_processor.get_total_samples() > 0:
+        frames = ctx.audio_processor.get_frames()
+        
+        if len(frames) == 0:
+            st.error("❌ Tidak ada audio! Troubleshooting:")
+            st.write("✓ Apakah tombol START sudah ditekan?")
+            st.write("✓ Apakah ada tulisan 'MEREKAM' berwarna hijau?")
+            st.write("✓ Apakah browser meminta izin mikrofon?")
+            st.write("✓ Apakah Frame count > 0 saat merekam?")
+        else:
+            try:
+                with st.spinner("🔄 Memproses audio..."):
+                    # Gabungkan frames
+                    audio_data = np.concatenate(frames)
+                    original_sr = 48000
+                    
+                    duration = len(audio_data) / original_sr
+                    st.info(f"📊 Audio terekam: {duration:.2f} detik ({len(audio_data)} samples, {len(frames)} frames)")
+                    
+                    # Resample ke 16kHz
+                    target_sr = 16000
+                    audio_resampled = librosa.resample(
+                        audio_data, 
+                        orig_sr=original_sr, 
+                        target_sr=target_sr
+                    )
+                    
+                    # Normalisasi
+                    audio_resampled = audio_resampled / (np.max(np.abs(audio_resampled)) + 1e-8)
+                    
+                    # Simpan dan tampilkan
+                    sf.write("recorded_audio.wav", audio_resampled, target_sr)
+                    st.audio("recorded_audio.wav", format="audio/wav")
+                    
+                    # Trim silence
+                    audio_trimmed, _ = librosa.effects.trim(audio_resampled, top_db=20)
+                    st.write(f"✂️ Setelah trim: {len(audio_trimmed)/target_sr:.2f} detik")
+                    
+                    if len(audio_trimmed) < 0.3 * target_sr:
+                        st.warning("⚠️ Audio terlalu pendek setelah trim. Mungkin hanya noise. Coba ucapkan lebih keras.")
+                    else:
+                        # Ekstraksi MFCC
+                        mfcc = librosa.feature.mfcc(y=audio_trimmed, sr=target_sr, n_mfcc=13)
+                        features = np.mean(mfcc.T, axis=0).reshape(1, -1)
+                        
+                        st.write(f"🔍 MFCC shape: {mfcc.shape}")
+                        
+                        # Prediksi
+                        features_scaled = scaler.transform(features)
+                        pred = model.predict(features_scaled)
+                        result = "BUKA" if pred[0] == 0 else "TUTUP"
+                        
+                        # Tampilkan hasil
+                        st.success(f"# 🎧 Prediksi: **{result}**")
+                        
+                        # Coba ambil confidence
+                        try:
+                            proba = model.predict_proba(features_scaled)
+                            confidence = np.max(proba) * 100
+                            st.info(f"**Confidence:** {confidence:.1f}%")
+                            
+                            with st.expander("📊 Detail Probabilitas"):
+                                st.write(f"- BUKA: {proba[0][0]*100:.1f}%")
+                                st.write(f"- TUTUP: {proba[0][1]*100:.1f}%")
+                        except:
+                            pass
+                        
+                        # Clear buffer setelah analisis
+                        ctx.audio_processor.clear_frames()
+                    
+            except Exception as e:
+                st.error(f"❌ Error: {str(e)}")
+                import traceback
+                with st.expander("🐛 Debug Info"):
+                    st.code(traceback.format_exc())
