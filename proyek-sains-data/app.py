@@ -4,52 +4,61 @@ import numpy as np
 import joblib
 import librosa
 import os
-
-
-model_path = os.path.join(os.path.dirname(__file__), "model_knn_voice.pkl")
-scaler_path = os.path.join(os.path.dirname(__file__), "scaler.pkl")
-# Load model dan scaler
-model = joblib.load(model_path)
-scaler = joblib.load(scaler_path)
+import av
 
 st.title("🎙️ Voice Command Classifier: BUKA / TUTUP")
 st.write("Tekan tombol **Start** lalu ucapkan kata 'Buka' atau 'Tutup'...")
 
-# Konfigurasi WebRTC
+# Load model dan scaler
+model_path = os.path.join(os.path.dirname(__file__), "model_knn_voice.pkl")
+scaler_path = os.path.join(os.path.dirname(__file__), "scaler.pkl")
+model = joblib.load(model_path)
+scaler = joblib.load(scaler_path)
+
 rtc_config = RTCConfiguration({
     "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
 })
 
 class AudioProcessor(AudioProcessorBase):
     def __init__(self):
-        self.buffer = []
+        self.buffer = np.array([], dtype=np.float32)
 
-    def recv_audio(self, frames):
-        # Konversi audio ke array numpy
-        audio_data = np.frombuffer(frames.to_ndarray().tobytes(), np.int16)
-        self.buffer.extend(audio_data)
-        return frames
+    def recv_audio(self, frame: av.AudioFrame) -> av.AudioFrame:
+        # Ambil audio numpy array dari frame
+        audio = frame.to_ndarray()
+        # Jika stereo → ubah jadi mono
+        if audio.ndim > 1:
+            audio = np.mean(audio, axis=1)
+        # Normalisasi ke float32
+        audio = audio.astype(np.float32)
+        # Tambahkan ke buffer
+        self.buffer = np.concatenate((self.buffer, audio))
+        return frame
 
-# Jalankan WebRTC streamer
 ctx = webrtc_streamer(
     key="voice-cmd",
-    mode=WebRtcMode.SENDONLY,  # ✅ gunakan konstanta yang benar
+    mode=WebRtcMode.SENDONLY,
     audio_processor_factory=AudioProcessor,
     rtc_configuration=rtc_config,
     media_stream_constraints={"audio": True, "video": False},
 )
 
-if ctx.audio_processor:
+# Analisis jika audio sudah direkam
+if ctx.state.playing and ctx.audio_processor:
     if st.button("🔍 Analisis Voice"):
-        if len(ctx.audio_processor.buffer) == 0:
-            st.warning("⚠️ Tidak ada suara yang terekam. Coba ucapkan lagi 'Buka' atau 'Tutup'.")
+        audio_data = ctx.audio_processor.buffer
+
+        if len(audio_data) < 16000:
+            st.warning("⚠️ Suara terlalu singkat. Coba ucapkan lebih lama 'Buka' atau 'Tutup'.")
         else:
-            # Konversi buffer audio ke numpy array
-            audio = np.array(ctx.audio_processor.buffer, dtype=np.float32)
-            sr = 16000  # sample rate
-            mfcc = librosa.feature.mfcc(y=audio, sr=sr, n_mfcc=13)
+            # Proses MFCC
+            sr = 16000
+            mfcc = librosa.feature.mfcc(y=audio_data, sr=sr, n_mfcc=13)
             features = np.mean(mfcc.T, axis=0).reshape(1, -1)
             features = scaler.transform(features)
             pred = model.predict(features)
             result = "BUKA" if pred[0] == 0 else "TUTUP"
+
             st.success(f"🎧 Prediksi: {result}")
+            # Reset buffer agar tidak menumpuk
+            ctx.audio_processor.buffer = np.array([], dtype=np.float32)
