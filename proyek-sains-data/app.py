@@ -1,33 +1,45 @@
 import streamlit as st
+from streamlit_webrtc import webrtc_streamer, AudioProcessorBase, RTCConfiguration
 import numpy as np
-import librosa
 import joblib
-import os
+import librosa
+
+# Load model dan scaler
+model = joblib.load("model_knn_voice.pkl")
+scaler = joblib.load("scaler.pkl")
 
 st.title("🎙️ Voice Command Classifier: BUKA / TUTUP")
 
-model_path = os.path.join(os.path.dirname(__file__), "model_knn_voice.pkl")
-scaler_path = os.path.join(os.path.dirname(__file__), "scaler.pkl")
+st.write("Tekan tombol **Start** lalu ucapkan kata 'Buka' atau 'Tutup'...")
 
-model = joblib.load(model_path)
-scaler = joblib.load(scaler_path)
+# Konfigurasi WebRTC
+rtc_config = RTCConfiguration({"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]})
 
-def extract_features(file):
-    y, sr = librosa.load(file, sr=None)
-    mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13)
-    return np.mean(mfcc.T, axis=0)
+class AudioProcessor(AudioProcessorBase):
+    def __init__(self):
+        self.buffer = []
 
-uploaded_file = st.file_uploader("🎤 Upload file audio (mp3/wav)", type=["wav", "mp3"])
+    def recv_audio(self, frames, sample_rate):
+        audio_data = np.frombuffer(frames.to_ndarray().tobytes(), np.int16)
+        self.buffer.extend(audio_data)
+        return frames
 
-if uploaded_file is not None:
-    st.audio(uploaded_file, format='audio/wav')
+# Mulai stream audio
+ctx = webrtc_streamer(
+    key="voice-cmd",
+    mode="sendonly",
+    audio_processor_factory=AudioProcessor,
+    rtc_configuration=rtc_config,
+    media_stream_constraints={"audio": True, "video": False},
+)
 
-    with open("temp.wav", "wb") as f:
-        f.write(uploaded_file.read())
-
-    features = extract_features("temp.wav").reshape(1, -1)
-    features = scaler.transform(features)
-    pred = model.predict(features)[0]
-
-    result = "🔓 BUKA" if pred == 0 else "🔒 TUTUP"
-    st.success(f"Prediksi suara: **{result}**")
+if ctx.audio_processor:
+    if st.button("🔍 Analisis Voice"):
+        audio = np.array(ctx.audio_processor.buffer, dtype=np.float32)
+        sr = 16000  # sample rate
+        mfcc = librosa.feature.mfcc(y=audio, sr=sr, n_mfcc=13)
+        features = np.mean(mfcc.T, axis=0).reshape(1, -1)
+        features = scaler.transform(features)
+        pred = model.predict(features)
+        result = "BUKA" if pred[0] == 0 else "TUTUP"
+        st.success(f"🎧 Prediksi: {result}")
