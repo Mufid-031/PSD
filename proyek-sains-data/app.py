@@ -7,7 +7,7 @@ import os
 import av
 import soundfile as sf
 from pydub import AudioSegment
-import queue
+import time
 
 # ===============================
 # 🔹 Judul & Deskripsi
@@ -32,6 +32,16 @@ rtc_config = RTCConfiguration({
 })
 
 # ===============================
+# 🔹 Session State untuk Audio Buffer
+# ===============================
+if "audio_buffer" not in st.session_state:
+    st.session_state.audio_buffer = []
+if "recording_start" not in st.session_state:
+    st.session_state.recording_start = None
+if "total_samples" not in st.session_state:
+    st.session_state.total_samples = 0
+
+# ===============================
 # 🔹 Pilihan Metode Input
 # ===============================
 mode = st.radio("🎧 Pilih metode input suara:", ["🎙️ Rekam langsung", "📁 Upload file (.wav / .mp3)"])
@@ -40,17 +50,9 @@ mode = st.radio("🎧 Pilih metode input suara:", ["🎙️ Rekam langsung", "�
 # 1️⃣ MODE REKAM LANGSUNG
 # ===============================
 if mode == "🎙️ Rekam langsung":
-    st.info("Tekan **Start** untuk mulai merekam suara Anda. Ucapkan 'BUKA' atau 'TUTUP' dengan jelas.")
-    
-    # Queue untuk menyimpan audio frames
-    if "audio_queue" not in st.session_state:
-        st.session_state.audio_queue = queue.Queue()
+    st.info("1️⃣ Tekan **START** → 2️⃣ Ucapkan 'BUKA' atau 'TUTUP' selama 2-3 detik → 3️⃣ Tekan **Analisis Voice**")
     
     class AudioProcessor(AudioProcessorBase):
-        def __init__(self):
-            self.frames = []
-            self.sample_rate = 48000  # Default WebRTC sample rate
-            
         def recv(self, frame: av.AudioFrame) -> av.AudioFrame:
             # Konversi frame ke numpy array
             sound = frame.to_ndarray()
@@ -59,17 +61,15 @@ if mode == "🎙️ Rekam langsung":
             if len(sound.shape) == 2:
                 sound = sound.mean(axis=1)
             
-            # Simpan ke frames
-            self.frames.append(sound.flatten())
+            sound = sound.flatten().astype(np.float32)
             
-            # Update queue untuk monitoring
-            try:
-                st.session_state.audio_queue.put(len(sound), block=False)
-            except queue.Full:
-                pass
+            # Simpan ke session state buffer (persistent across reruns)
+            st.session_state.audio_buffer.append(sound)
+            st.session_state.total_samples += len(sound)
             
             return frame
 
+    # WebRTC Streamer
     ctx = webrtc_streamer(
         key="voice-cmd",
         mode=WebRtcMode.SENDRECV,
@@ -79,71 +79,114 @@ if mode == "🎙️ Rekam langsung":
         async_processing=True,
     )
 
-    # Tampilkan status recording
-    if ctx.state.playing:
-        st.success("🔴 Sedang merekam... Ucapkan 'BUKA' atau 'TUTUP'")
-        
-        # Tampilkan jumlah frame yang terekam
-        if ctx.audio_processor:
-            frame_count = len(ctx.audio_processor.frames)
-            st.metric("Frame Audio Terekam", frame_count)
+    # Update recording start time
+    if ctx.state.playing and st.session_state.recording_start is None:
+        st.session_state.recording_start = time.time()
+    elif not ctx.state.playing:
+        st.session_state.recording_start = None
+
+    # Status Recording
+    col1, col2 = st.columns(2)
+    with col1:
+        if ctx.state.playing:
+            duration = time.time() - st.session_state.recording_start if st.session_state.recording_start else 0
+            st.success(f"🔴 **MEREKAM** ({duration:.1f}s)")
+        else:
+            st.info("⚪ Tekan START untuk mulai")
     
-    # Tombol analisis (bisa ditekan kapan saja)
-    if st.button("🔍 Analisis Voice", disabled=not ctx.state.playing):
-        if ctx.audio_processor and len(ctx.audio_processor.frames) > 0:
+    with col2:
+        samples_collected = st.session_state.total_samples
+        duration_seconds = samples_collected / 48000 if samples_collected > 0 else 0
+        st.metric("Audio Terekam", f"{duration_seconds:.2f} detik")
+    
+    # Progress bar
+    min_duration = 1.0  # Minimal 1 detik
+    progress = min(duration_seconds / min_duration, 1.0)
+    st.progress(progress)
+    
+    if duration_seconds < min_duration:
+        st.warning(f"⏳ Rekam minimal {min_duration} detik. Sekarang: {duration_seconds:.2f} detik")
+    
+    # Tombol Reset
+    if st.button("🔄 Reset Recording"):
+        st.session_state.audio_buffer = []
+        st.session_state.total_samples = 0
+        st.rerun()
+    
+    # Tombol Analisis
+    analyze_button = st.button(
+        "🔍 Analisis Voice", 
+        disabled=(duration_seconds < min_duration),
+        type="primary"
+    )
+    
+    if analyze_button:
+        if len(st.session_state.audio_buffer) == 0:
+            st.error("❌ Buffer audio kosong! Pastikan mikrofon aktif.")
+        else:
             try:
-                # Gabungkan semua frame
-                audio_data = np.concatenate(ctx.audio_processor.frames)
-                original_sr = ctx.audio_processor.sample_rate
-                
-                st.info(f"📊 Audio terekam: {len(audio_data)} samples, SR: {original_sr} Hz")
-                
-                # Resample ke 16kHz untuk model
-                target_sr = 16000
-                audio_resampled = librosa.resample(
-                    audio_data.astype(np.float32), 
-                    orig_sr=original_sr, 
-                    target_sr=target_sr
-                )
-                
-                # Normalisasi amplitude
-                audio_resampled = audio_resampled / np.max(np.abs(audio_resampled) + 1e-6)
-                
-                # Cek panjang minimal (minimal 0.5 detik)
-                min_length = int(0.5 * target_sr)
-                if len(audio_resampled) < min_length:
-                    st.warning("⚠️ Suara terlalu singkat. Minimal 0.5 detik. Coba ucapkan lebih lama.")
-                else:
+                with st.spinner("Menganalisis audio..."):
+                    # Gabungkan semua audio chunks
+                    audio_data = np.concatenate(st.session_state.audio_buffer)
+                    original_sr = 48000  # WebRTC default sample rate
+                    
+                    st.info(f"📊 Total audio: {len(audio_data)} samples ({len(audio_data)/original_sr:.2f} detik)")
+                    
+                    # Resample ke 16kHz
+                    target_sr = 16000
+                    audio_resampled = librosa.resample(
+                        audio_data, 
+                        orig_sr=original_sr, 
+                        target_sr=target_sr
+                    )
+                    
+                    # Normalisasi
+                    audio_resampled = audio_resampled / (np.max(np.abs(audio_resampled)) + 1e-8)
+                    
                     # Simpan untuk preview
                     sf.write("recorded_audio.wav", audio_resampled, target_sr)
                     st.audio("recorded_audio.wav", format="audio/wav")
                     
+                    # Trim silence (opsional tapi membantu)
+                    audio_trimmed, _ = librosa.effects.trim(audio_resampled, top_db=20)
+                    
+                    st.write(f"✂️ Audio setelah trim: {len(audio_trimmed)/target_sr:.2f} detik")
+                    
                     # Ekstraksi MFCC
-                    mfcc = librosa.feature.mfcc(y=audio_resampled, sr=target_sr, n_mfcc=13)
+                    mfcc = librosa.feature.mfcc(y=audio_trimmed, sr=target_sr, n_mfcc=13)
                     features = np.mean(mfcc.T, axis=0).reshape(1, -1)
                     
-                    # Debug info
-                    st.write(f"🔍 Shape MFCC: {mfcc.shape}")
-                    st.write(f"🔍 Shape Features: {features.shape}")
+                    st.write(f"🔍 MFCC shape: {mfcc.shape}, Features shape: {features.shape}")
                     
                     # Prediksi
                     features_scaled = scaler.transform(features)
                     pred = model.predict(features_scaled)
-                    proba = model.predict_proba(features_scaled)
                     
-                    result = "BUKA" if pred[0] == 0 else "TUTUP"
-                    confidence = np.max(proba) * 100
+                    # Cek apakah model punya predict_proba
+                    try:
+                        proba = model.predict_proba(features_scaled)
+                        confidence = np.max(proba) * 100
+                        
+                        result = "BUKA" if pred[0] == 0 else "TUTUP"
+                        st.success(f"# 🎧 Prediksi: **{result}**")
+                        st.info(f"Confidence: {confidence:.1f}%")
+                        
+                        # Tampilkan probabilitas untuk kedua kelas
+                        st.write("📊 Probabilitas:")
+                        st.write(f"- BUKA: {proba[0][0]*100:.1f}%")
+                        st.write(f"- TUTUP: {proba[0][1]*100:.1f}%")
+                    except:
+                        result = "BUKA" if pred[0] == 0 else "TUTUP"
+                        st.success(f"# 🎧 Prediksi: **{result}**")
                     
-                    st.success(f"🎧 Prediksi: **{result}** (Confidence: {confidence:.1f}%)")
-                    
-                    # Reset frames setelah analisis
-                    ctx.audio_processor.frames = []
+                    # Reset buffer setelah analisis
+                    st.session_state.audio_buffer = []
+                    st.session_state.total_samples = 0
                     
             except Exception as e:
                 st.error(f"❌ Error saat analisis: {str(e)}")
-                st.write("Detail error:", e)
-        else:
-            st.warning("⚠️ Tidak ada audio yang terekam. Pastikan mikrofon aktif dan izin akses diberikan.")
+                import traceback
+                st.code(traceback.format_exc())
 
 # ===============================
 # 2️⃣ MODE UPLOAD FILE
@@ -166,23 +209,39 @@ else:
         st.audio(temp_path, format="audio/wav")
 
         # Analisis
-        if st.button("🔍 Analisis Voice"):
+        if st.button("🔍 Analisis Voice", type="primary"):
             try:
                 y, sr = librosa.load(temp_path, sr=16000)
                 
-                # Normalisasi
-                y = y / np.max(np.abs(y) + 1e-6)
+                st.info(f"📊 Audio duration: {len(y)/sr:.2f} detik")
                 
-                mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13)
+                # Normalisasi
+                y = y / (np.max(np.abs(y)) + 1e-8)
+                
+                # Trim silence
+                y_trimmed, _ = librosa.effects.trim(y, top_db=20)
+                
+                mfcc = librosa.feature.mfcc(y=y_trimmed, sr=sr, n_mfcc=13)
                 features = np.mean(mfcc.T, axis=0).reshape(1, -1)
                 features_scaled = scaler.transform(features)
                 pred = model.predict(features_scaled)
-                proba = model.predict_proba(features_scaled)
                 
-                result = "BUKA" if pred[0] == 0 else "TUTUP"
-                confidence = np.max(proba) * 100
-                
-                st.success(f"🎧 Prediksi: **{result}** (Confidence: {confidence:.1f}%)")
+                try:
+                    proba = model.predict_proba(features_scaled)
+                    confidence = np.max(proba) * 100
+                    
+                    result = "BUKA" if pred[0] == 0 else "TUTUP"
+                    st.success(f"# 🎧 Prediksi: **{result}**")
+                    st.info(f"Confidence: {confidence:.1f}%")
+                    
+                    st.write("📊 Probabilitas:")
+                    st.write(f"- BUKA: {proba[0][0]*100:.1f}%")
+                    st.write(f"- TUTUP: {proba[0][1]*100:.1f}%")
+                except:
+                    result = "BUKA" if pred[0] == 0 else "TUTUP"
+                    st.success(f"# 🎧 Prediksi: **{result}**")
                 
             except Exception as e:
                 st.error(f"❌ Error: {str(e)}")
+                import traceback
+                st.code(traceback.format_exc())
