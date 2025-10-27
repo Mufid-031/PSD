@@ -1,7 +1,9 @@
-streamlit>=1.37.0
-streamlit-webrtc>=0.45.0
+streamlit==1.37.0
+streamlit-webrtc==0.47.7
 librosa==0.10.2.post1
 numpy
 scikit-learn
 joblib
 soundfile
+pydub
+av
