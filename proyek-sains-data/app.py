@@ -204,14 +204,15 @@ if mode == "🎙️ Rekam langsung":
                 st.rerun()
     
     with col_btn2:
+        # Ubah kondisi: cukup ada audio processor dan ada samples
         can_analyze = (ctx.audio_processor and 
-                      ctx.audio_processor.get_total_samples() > 0 and
-                      not ctx.state.playing)
+                      ctx.audio_processor.get_total_samples() > 0)
         
         analyze_clicked = st.button(
             "🔍 Analisis Voice", 
             disabled=not can_analyze,
-            type="primary"
+            type="primary",
+            help="Tekan STOP dulu sebelum analisis untuk hasil terbaik"
         )
     
     # Proses analisis
