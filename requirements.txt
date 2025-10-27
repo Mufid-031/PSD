@@ -1,5 +1,5 @@
-streamlit==1.37.0
-streamlit-webrtc==0.47.7
+streamlit>=1.37.0
+streamlit-webrtc>=0.45.0
 librosa==0.10.2.post1
 numpy
 scikit-learn
