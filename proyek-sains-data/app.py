@@ -8,6 +8,8 @@ import io
 import os
 import soundfile as sf
 from pydub import AudioSegment
+import json
+
 
 # ===============================
 # 🧠 Load Model & Scaler
@@ -43,9 +45,15 @@ def load_models():
         scaler_action = pickle.load(f)
     with open(scaler_person_path, "rb") as f:
         scaler_person = pickle.load(f)
+    # Load daftar fitur yang digunakan model
+    with open(os.path.join(model_dir, "features_action.json")) as f:
+        selected_features_action = json.load(f)
+    with open(os.path.join(model_dir, "features_person.json")) as f:
+        selected_features_person = json.load(f)
 
     st.success("✅ Model dan scaler berhasil dimuat!")
-    return model_action, model_person, scaler_action, scaler_person
+    return model_action, model_person, scaler_action, scaler_person, selected_features_action, selected_features_person
+
 
 
 # ===============================
@@ -104,7 +112,7 @@ def analyze_audio(audio_bytes, source="rekaman"):
         df_features = df_features.replace([np.inf, -np.inf], 0).fillna(0)
 
         # Load model & scaler
-        model_action, model_person, scaler_action, scaler_person = load_models()
+        model_action, model_person, scaler_action, scaler_person, selected_features_action, selected_features_person = load_models()
 
         # Pastikan kolom sesuai dengan fitur yang digunakan saat training
         try:
@@ -118,6 +126,9 @@ def analyze_audio(audio_bytes, source="rekaman"):
             for col in missing_cols:
                 df_features[col] = 0
             df_features = df_features[scaler_action.feature_names_in_]
+
+        df_action = df_features[selected_features_action]
+        df_person = df_features[selected_features_person]
 
         # Scaling
         X_action_scaled = scaler_action.transform(df_features)
