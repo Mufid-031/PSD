@@ -7,3 +7,4 @@ soundfile
 sounddevice
 pydub
 audio-recorder-streamlit
+tsfel
