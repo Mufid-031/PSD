@@ -61,9 +61,10 @@ def extract_tsfel_features(samples, sr):
 
 
 # ===============================
-# 🔍 Analisis Audio
+# 🔍 Analisis Audio (Versi Aman)
 # ===============================
 def analyze_audio(audio_bytes, source="rekaman"):
+    import pandas as pd
     try:
         # Konversi bytes ke AudioSegment
         audio_segment = AudioSegment.from_file(io.BytesIO(audio_bytes))
@@ -81,7 +82,7 @@ def analyze_audio(audio_bytes, source="rekaman"):
 
         sr = audio_segment.frame_rate
 
-        # Preview audio
+        # Simpan dan preview audio
         sf.write("temp_audio.wav", samples, sr)
         st.audio("temp_audio.wav", format="audio/wav")
         st.info(f"📊 Audio {source}: {len(samples)/sr:.2f} detik | SR: {sr} Hz")
@@ -96,8 +97,27 @@ def analyze_audio(audio_bytes, source="rekaman"):
         with st.spinner("🔍 Mengekstraksi fitur..."):
             df_features = extract_tsfel_features(samples_trimmed, sr)
 
+        # Pastikan df_features adalah DataFrame dan bersih
+        if not isinstance(df_features, pd.DataFrame):
+            df_features = pd.DataFrame(df_features)
+
+        df_features = df_features.replace([np.inf, -np.inf], 0).fillna(0)
+
         # Load model & scaler
         model_action, model_person, scaler_action, scaler_person = load_models()
+
+        # Pastikan kolom sesuai dengan fitur yang digunakan saat training
+        try:
+            df_features = df_features[scaler_action.feature_names_in_]
+        except AttributeError:
+            # Jika scaler tidak punya atribut feature_names_in_, abaikan
+            pass
+        except KeyError:
+            # Jika kolom tidak cocok, isi kolom yang hilang dengan 0
+            missing_cols = [c for c in scaler_action.feature_names_in_ if c not in df_features.columns]
+            for col in missing_cols:
+                df_features[col] = 0
+            df_features = df_features[scaler_action.feature_names_in_]
 
         # Scaling
         X_action_scaled = scaler_action.transform(df_features)
@@ -107,12 +127,12 @@ def analyze_audio(audio_bytes, source="rekaman"):
         pred_action = model_action.predict(X_action_scaled)[0]
         pred_person = model_person.predict(X_person_scaled)[0]
 
-        # Confidence (jika ada predict_proba)
+        # Confidence (jika model mendukung predict_proba)
         confidence_action, confidence_person = None, None
         try:
             confidence_action = np.max(model_action.predict_proba(X_action_scaled)) * 100
             confidence_person = np.max(model_person.predict_proba(X_person_scaled)) * 100
-        except:
+        except Exception:
             pass
 
         # Tampilkan hasil
@@ -138,7 +158,6 @@ def analyze_audio(audio_bytes, source="rekaman"):
         import traceback
         with st.expander("🐛 Debug Info"):
             st.code(traceback.format_exc())
-
 
 # ===============================
 # 🎛️ Tampilan Utama
