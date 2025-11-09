@@ -14,14 +14,37 @@ from pydub import AudioSegment
 # ===============================
 @st.cache_resource
 def load_models():
-    with open("model/model_action.pkl", "rb") as f:
+    """Load semua model dan scaler dengan path dinamis"""
+    base_dir = os.path.dirname(__file__)   # Folder tempat app.py berada
+    model_dir = os.path.join(base_dir, "model")
+
+    # Buat path dinamis
+    model_action_path = os.path.join(model_dir, "model_action.pkl")
+    model_person_path = os.path.join(model_dir, "model_person.pkl")
+    scaler_action_path = os.path.join(model_dir, "scaler_action.pkl")
+    scaler_person_path = os.path.join(model_dir, "scaler_person.pkl")
+
+    # Cek apakah semua file ada
+    required_files = [model_action_path, model_person_path, scaler_action_path, scaler_person_path]
+    missing_files = [f for f in required_files if not os.path.exists(f)]
+
+    if missing_files:
+        st.error("❌ Beberapa file model/scaler tidak ditemukan:")
+        for mf in missing_files:
+            st.write(f"- `{os.path.basename(mf)}` tidak ada di `{model_dir}`")
+        st.stop()
+
+    # Load model dan scaler
+    with open(model_action_path, "rb") as f:
         model_action = pickle.load(f)
-    with open("model/model_person.pkl", "rb") as f:
+    with open(model_person_path, "rb") as f:
         model_person = pickle.load(f)
-    with open("model/scaler_action.pkl", "rb") as f:
+    with open(scaler_action_path, "rb") as f:
         scaler_action = pickle.load(f)
-    with open("model/scaler_person.pkl", "rb") as f:
+    with open(scaler_person_path, "rb") as f:
         scaler_person = pickle.load(f)
+
+    st.success("✅ Model dan scaler berhasil dimuat!")
     return model_action, model_person, scaler_action, scaler_person
 
 
