@@ -67,6 +67,18 @@ def extract_tsfel_features(samples, sr):
     features = features.fillna(0).replace([np.inf, -np.inf], 0)
     return features
 
+# ======== Samakan kolom dengan yang digunakan saat training ========
+def align_features(df_input, selected_features):
+    # Tambahkan kolom yang hilang
+    for col in selected_features:
+        if col not in df_input.columns:
+            df_input[col] = 0
+
+    # Buang kolom yang tidak termasuk
+    df_input = df_input[selected_features]
+
+    return df_input.fillna(0)
+
 
 # ===============================
 # 🔍 Analisis Audio (Versi Aman)
@@ -127,12 +139,12 @@ def analyze_audio(audio_bytes, source="rekaman"):
                 df_features[col] = 0
             df_features = df_features[scaler_action.feature_names_in_]
 
-        df_action = df_features[selected_features_action]
-        df_person = df_features[selected_features_person]
+        df_action = align_features(df_features.copy(), selected_features_action)
+        df_person = align_features(df_features.copy(), selected_features_person)
 
         # Scaling
-        X_action_scaled = scaler_action.transform(df_features)
-        X_person_scaled = scaler_person.transform(df_features)
+        X_action_scaled = scaler_action.transform(df_action)
+        X_person_scaled = scaler_person.transform(df_person)
 
         # Prediksi
         pred_action = model_action.predict(X_action_scaled)[0]
