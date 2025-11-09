@@ -153,8 +153,8 @@ def analyze_audio(audio_bytes, source="rekaman"):
         # Confidence (jika model mendukung predict_proba)
         confidence_action, confidence_person = None, None
         try:
-            confidence_action = np.max(model_action.predict_proba(X_action_scaled)) * 100
-            confidence_person = np.max(model_person.predict_proba(X_person_scaled)) * 100
+            confidence_action = np.max(model_action.predict_proba(pred_action)) * 100
+            confidence_person = np.max(model_person.predict_proba(pred_person)) * 100
         except Exception:
             pass
 
