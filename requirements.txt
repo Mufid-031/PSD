@@ -8,3 +8,8 @@ sounddevice
 pydub
 audio-recorder-streamlit
 tsfel
+
+jupyter-book
+ghp-import
+nbconvert
+nbformat
