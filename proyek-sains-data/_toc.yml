@@ -11,3 +11,4 @@ chapters:
     - file: oversampling
 - file: timeSeries
 - file: voiceDetection
+- file: voiceDetection-2
