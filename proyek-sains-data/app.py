@@ -117,7 +117,6 @@ def analyze_audio(audio_bytes, source="rekaman"):
         with st.spinner("🔍 Mengekstraksi fitur..."):
             df_features = extract_tsfel_features(samples_trimmed, sr)
 
-        # Pastikan df_features adalah DataFrame dan bersih
         if not isinstance(df_features, pd.DataFrame):
             df_features = pd.DataFrame(df_features)
 
@@ -126,18 +125,11 @@ def analyze_audio(audio_bytes, source="rekaman"):
         # Load model & scaler
         model_action, model_person, scaler_action, scaler_person, selected_features_action, selected_features_person = load_models()
 
-        # Pastikan kolom sesuai dengan fitur yang digunakan saat training
+        # Pastikan kolom sesuai
         try:
             df_features = df_features[scaler_action.feature_names_in_]
-        except AttributeError:
-            # Jika scaler tidak punya atribut feature_names_in_, abaikan
+        except (AttributeError, KeyError):
             pass
-        except KeyError:
-            # Jika kolom tidak cocok, isi kolom yang hilang dengan 0
-            missing_cols = [c for c in scaler_action.feature_names_in_ if c not in df_features.columns]
-            for col in missing_cols:
-                df_features[col] = 0
-            df_features = df_features[scaler_action.feature_names_in_]
 
         df_action = align_features(df_features.copy(), selected_features_action)
         df_person = align_features(df_features.copy(), selected_features_person)
@@ -146,17 +138,28 @@ def analyze_audio(audio_bytes, source="rekaman"):
         X_action_scaled = scaler_action.transform(df_action)
         X_person_scaled = scaler_person.transform(df_person)
 
-        # Prediksi
+        # Prediksi utama
         pred_action = model_action.predict(X_action_scaled)[0]
         pred_person = model_person.predict(X_person_scaled)[0]
 
-        # Confidence (jika model mendukung predict_proba)
-        confidence_action, confidence_person = None, None
+        # Hitung confidence rata-rata
+        confidence_action = None
+        confidence_person = None
         try:
-            confidence_action = np.max(model_action.predict_proba(X_action_scaled)) * 100
-            confidence_person = np.max(model_person.predict_proba(X_person_scaled)) * 100
+            proba_action = model_action.predict_proba(X_action_scaled)
+            confidence_action = np.mean(np.max(proba_action, axis=1)) * 100
+
+            proba_person = model_person.predict_proba(X_person_scaled)
+            confidence_person = np.mean(np.max(proba_person, axis=1)) * 100
         except Exception:
             pass
+
+        # 🔹 Jika confidence rendah, tandai sebagai Unknown
+        THRESHOLD = 70  # kamu bisa ubah ambang ini
+        if confidence_person is not None and confidence_person < THRESHOLD:
+            pred_person_display = "Unknown"
+        else:
+            pred_person_display = pred_person.upper()
 
         # Tampilkan hasil
         st.success("✅ Prediksi Berhasil!")
@@ -167,20 +170,22 @@ def analyze_audio(audio_bytes, source="rekaman"):
             if confidence_action:
                 st.progress(confidence_action / 100)
                 st.caption(f"Confidence: {confidence_action:.1f}%")
+
         with col2:
             st.subheader("🧑 Orang")
-            st.markdown(f"**{pred_person.upper()}**")
+            st.markdown(f"**{pred_person_display}**")
             if confidence_person:
                 st.progress(confidence_person / 100)
                 st.caption(f"Confidence: {confidence_person:.1f}%")
 
-        return pred_action, pred_person
+        return pred_action, pred_person_display
 
     except Exception as e:
         st.error(f"❌ Error saat analisis: {e}")
         import traceback
         with st.expander("🐛 Debug Info"):
             st.code(traceback.format_exc())
+
 
 # ===============================
 # 🎛️ Tampilan Utama
