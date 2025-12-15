@@ -8,6 +8,7 @@ sounddevice
 pydub
 audio-recorder-streamlit
 tsfel
+opencv-python-headless
 
 jupyter-book
 ghp-import
