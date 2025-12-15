@@ -1,0 +1,1699 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Menggunakan semua fitur &#8212; Proyek Sains Data</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'voiceDetection-2';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Car Detection" href="car.html" />
+    <link rel="prev" title="Voice Detection" href="voiceDetection.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.jpg" class="logo__image only-light" alt="Proyek Sains Data - Home"/>
+    <script>document.write(`<img src="_static/logo.jpg" class="logo__image only-dark" alt="Proyek Sains Data - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to my Proyek Sains Data
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="bussinessUnderstanding.html">Bussiness Understanding</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="dataUnderstanding.html">Data Understanding</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="dataExploration.html">Ekplorasi Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="oversampling.html">Oversampling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="timeSeries.html">Time Series dataset for prediction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="voiceDetection.html">Voice Detection</a></li>
+
+
+
+
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Menggunakan semua fitur</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="car.html">Car Detection</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Mufid-031/PSD" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Mufid-031/PSD/issues/new?title=Issue%20on%20page%20%2FvoiceDetection-2.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/voiceDetection-2.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Menggunakan semua fitur</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Menggunakan semua fitur</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#rank-fitur-menggunakan-information-gain">Rank fitur menggunakan information gain</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection">Feature selection</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#modeling-again-after-feature-selection">Modeling again, after feature selection</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#simpan-model-scaler">Simpan model &amp; Scaler</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tsfel</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">librosa</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">base_path</span> <span class="o">=</span> <span class="s2">&quot;data/voice&quot;</span>
+
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">tsfel</span><span class="o">.</span><span class="n">get_features_by_domain</span><span class="p">()</span>
+
+<span class="n">all_features</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">person</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">base_path</span><span class="p">):</span>
+    <span class="n">person_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="n">person</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">person_path</span><span class="p">):</span>
+        <span class="k">continue</span>
+
+    <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">person_path</span><span class="p">):</span>
+        <span class="n">action_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">person_path</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">action_path</span><span class="p">):</span>
+            <span class="k">continue</span>
+
+        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">action_path</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.mp3&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.wav&quot;</span><span class="p">):</span>
+                <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">action_path</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">signal</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+                    <span class="n">features</span> <span class="o">=</span> <span class="n">tsfel</span><span class="o">.</span><span class="n">time_series_features_extractor</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+                    <span class="n">features</span><span class="p">[</span><span class="s1">&#39;label_orang&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">person</span>
+                    <span class="n">features</span><span class="p">[</span><span class="s1">&#39;label_aksi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">action</span>
+                    <span class="n">features</span><span class="p">[</span><span class="s1">&#39;file&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">filename</span>
+
+                    <span class="n">all_features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ Selesai ekstraksi: </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;❌ Gagal memproses </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">final_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">all_features</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">final_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;data/features_tsfel_all_with_person_label.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✅ Semua fitur berhasil disimpan ke &#39;data/features_tsfel_all_with_person_label.csv&#39;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka59.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka58.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka88.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka35.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka97.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka76.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka93.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka41.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka43.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka72.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka80.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka21.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka85.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka90.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka89.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka7.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka91.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka49.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka79.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka52.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka14.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka83.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka78.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka48.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka53.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka99.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka36.mp3
+✅ Selesai ekstraksi: data/voice/maulana/buka/buka29.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka15.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka75.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka42.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka65.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka22.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka74.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka84.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka55.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka12.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka8.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka66.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka94.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka50.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka44.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka40.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka10.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka100.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka23.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka98.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka47.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka46.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka5.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Selesai ekstraksi: data/voice/maulana/buka/buka11.mp3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2313/2464330767.py:23: UserWarning: Using default sampling frequency set in configuration file.
+  features = tsfel.time_series_features_extractor(cfg, signal, verbose=0)
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">23</span>
+<span class="g g-Whitespace">     </span><span class="mi">21</span> <span class="k">try</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">22</span>     <span class="n">signal</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">23</span>     <span class="n">features</span> <span class="o">=</span> <span class="n">tsfel</span><span class="o">.</span><span class="n">time_series_features_extractor</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">25</span>     <span class="n">features</span><span class="p">[</span><span class="s1">&#39;label_orang&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">person</span>
+<span class="g g-Whitespace">     </span><span class="mi">26</span>     <span class="n">features</span><span class="p">[</span><span class="s1">&#39;label_aksi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">action</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/tsfel/feature_extraction/calc_features.py:379,</span> in <span class="ni">time_series_features_extractor</span><span class="nt">(config, timeseries, fs, window_size, overlap, verbose, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">374</span>         <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">375</span>             <span class="s2">&quot;n_jobs value is not valid. &quot;</span> <span class="s2">&quot;Choose an integer value or None for no multiprocessing.&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">376</span>         <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">377</span> <span class="c1"># single window</span>
+<span class="g g-Whitespace">    </span><span class="mi">378</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">379</span>     <span class="n">features_final</span> <span class="o">=</span> <span class="n">calc_window_features</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">380</span>         <span class="n">config</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">381</span>         <span class="n">timeseries</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">382</span>         <span class="n">fs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">383</span>         <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">384</span>         <span class="n">features_path</span><span class="o">=</span><span class="n">features_path</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">385</span>         <span class="n">header_names</span><span class="o">=</span><span class="n">names</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">386</span>         <span class="n">single_window</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">387</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">389</span> <span class="c1"># Assuring the same feature extraction order</span>
+<span class="g g-Whitespace">    </span><span class="mi">390</span> <span class="n">features_final</span> <span class="o">=</span> <span class="n">features_final</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">features_final</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/tsfel/feature_extraction/calc_features.py:517,</span> in <span class="ni">calc_window_features</span><span class="nt">(config, window, fs, verbose, single_window, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">515</span> <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">header_names</span><span class="p">)):</span>
+<span class="g g-Whitespace">    </span><span class="mi">516</span>     <span class="n">sig_ax</span> <span class="o">=</span> <span class="n">window</span> <span class="k">if</span> <span class="n">single_axis</span> <span class="k">else</span> <span class="n">window</span><span class="p">[:,</span> <span class="n">ax</span><span class="p">]</span>
+<span class="ne">--&gt; </span><span class="mi">517</span>     <span class="n">eval_result_ax</span> <span class="o">=</span> <span class="n">feature_funcs</span><span class="p">[</span><span class="n">func_total</span><span class="p">](</span><span class="n">sig_ax</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters_total</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">518</span>     <span class="c1"># Function returns more than one element</span>
+<span class="g g-Whitespace">    </span><span class="mi">519</span>     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">eval_result_ax</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/tsfel/feature_extraction/features.py:1175,</span> in <span class="ni">spectral_skewness</span><span class="nt">(signal, fs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1172</span> <span class="n">f</span><span class="p">,</span> <span class="n">fmag</span> <span class="o">=</span> <span class="n">calc_fft</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1173</span> <span class="n">spect_centr</span> <span class="o">=</span> <span class="n">spectral_centroid</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">1175</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">spectral_spread</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">1176</span>     <span class="k">return</span> <span class="mi">0</span>
+<span class="g g-Whitespace">   </span><span class="mi">1177</span> <span class="k">else</span><span class="p">:</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/tsfel/feature_extraction/features.py:1204,</span> in <span class="ni">spectral_spread</span><span class="nt">(signal, fs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1182</span> <span class="nd">@set_domain</span><span class="p">(</span><span class="s2">&quot;domain&quot;</span><span class="p">,</span> <span class="s2">&quot;spectral&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1183</span> <span class="k">def</span><span class="w"> </span><span class="nf">spectral_spread</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">1184</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;Measures the spread of the spectrum around its mean value.</span>
+<span class="g g-Whitespace">   </span><span class="mi">1185</span><span class="sd"> </span>
+<span class="g g-Whitespace">   </span><span class="mi">1186</span><span class="sd">     Description and formula in Article:</span>
+<span class="sd">   (...)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1202</span><span class="sd">         Spectral Spread</span>
+<span class="g g-Whitespace">   </span><span class="mi">1203</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">1204</span>     <span class="n">f</span><span class="p">,</span> <span class="n">fmag</span> <span class="o">=</span> <span class="n">calc_fft</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1205</span>     <span class="n">spect_centroid</span> <span class="o">=</span> <span class="n">spectral_centroid</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1207</span>     <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">fmag</span><span class="p">):</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/tsfel/feature_extraction/features_utils.py:73,</span> in <span class="ni">calc_fft</span><span class="nt">(signal, fs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">55</span> <span class="k">def</span><span class="w"> </span><span class="nf">calc_fft</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">56</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;This functions computes the fft of a signal.</span>
+<span class="g g-Whitespace">     </span><span class="mi">57</span><span class="sd"> </span>
+<span class="g g-Whitespace">     </span><span class="mi">58</span><span class="sd">     Parameters</span>
+<span class="sd">   (...)</span>
+<span class="g g-Whitespace">     </span><span class="mi">70</span><span class="sd">         Amplitude of the frequency values (yy axis)</span>
+<span class="g g-Whitespace">     </span><span class="mi">71</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="ne">---&gt; </span><span class="mi">73</span>     <span class="n">fmag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">signal</span><span class="p">))</span>
+<span class="g g-Whitespace">     </span><span class="mi">74</span>     <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfftfreq</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">signal</span><span class="p">),</span> <span class="n">d</span><span class="o">=</span><span class="mi">1</span> <span class="o">/</span> <span class="n">fs</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">76</span>     <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">fmag</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/numpy/fft/_pocketfft.py:411,</span> in <span class="ni">rfft</span><span class="nt">(a, n, axis, norm, out)</span>
+<span class="g g-Whitespace">    </span><span class="mi">409</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">410</span>     <span class="n">n</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span>
+<span class="ne">--&gt; </span><span class="mi">411</span> <span class="n">output</span> <span class="o">=</span> <span class="n">_raw_fft</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">norm</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">out</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">412</span> <span class="k">return</span> <span class="n">output</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/numpy/fft/_pocketfft.py:94,</span> in <span class="ni">_raw_fft</span><span class="nt">(a, n, axis, is_real, is_forward, norm, out)</span>
+<span class="g g-Whitespace">     </span><span class="mi">90</span> <span class="k">elif</span> <span class="p">((</span><span class="n">shape</span> <span class="o">:=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="s2">&quot;shape&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+<span class="g g-Whitespace">     </span><span class="mi">91</span>       <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="n">a</span><span class="o">.</span><span class="n">ndim</span> <span class="ow">or</span> <span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">!=</span> <span class="n">n_out</span><span class="p">)):</span>
+<span class="g g-Whitespace">     </span><span class="mi">92</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;output array has wrong shape.&quot;</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">94</span> <span class="k">return</span> <span class="n">ufunc</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">fct</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="p">[(</span><span class="n">axis</span><span class="p">,),</span> <span class="p">(),</span> <span class="p">(</span><span class="n">axis</span><span class="p">,)],</span> <span class="n">out</span><span class="o">=</span><span class="n">out</span><span class="p">)</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;data/features_tsfel_all_with_person_label-mufid-imam.csv&quot;</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✅ Data berhasil dibaca!&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Jumlah sample:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Jumlah kolom :&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span> <span class="o">-</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Data berhasil dibaca!
+Jumlah sample: 400
+Jumlah kolom : 156
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0_Absolute energy</th>
+      <th>0_Area under the curve</th>
+      <th>0_Autocorrelation</th>
+      <th>0_Average power</th>
+      <th>0_Centroid</th>
+      <th>0_ECDF Percentile Count_0</th>
+      <th>0_ECDF Percentile Count_1</th>
+      <th>0_ECDF Percentile_0</th>
+      <th>0_ECDF Percentile_1</th>
+      <th>0_ECDF_0</th>
+      <th>...</th>
+      <th>0_Wavelet variance_3.12Hz</th>
+      <th>0_Wavelet variance_3.57Hz</th>
+      <th>0_Wavelet variance_4.17Hz</th>
+      <th>0_Wavelet variance_5.0Hz</th>
+      <th>0_Wavelet variance_6.25Hz</th>
+      <th>0_Wavelet variance_8.33Hz</th>
+      <th>0_Zero crossing rate</th>
+      <th>label_orang</th>
+      <th>label_aksi</th>
+      <th>file</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>17.701422</td>
+      <td>6.699155</td>
+      <td>13.0</td>
+      <td>0.010597</td>
+      <td>690.916973</td>
+      <td>33408.0</td>
+      <td>133632.0</td>
+      <td>-0.000732</td>
+      <td>0.000824</td>
+      <td>0.000006</td>
+      <td>...</td>
+      <td>0.000803</td>
+      <td>0.000537</td>
+      <td>0.000320</td>
+      <td>0.000170</td>
+      <td>0.000082</td>
+      <td>0.000034</td>
+      <td>16559.0</td>
+      <td>imam</td>
+      <td>buka</td>
+      <td>buka1.wav</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>4076.943443</td>
+      <td>144.812594</td>
+      <td>1.0</td>
+      <td>2.803468</td>
+      <td>697.658083</td>
+      <td>29085.0</td>
+      <td>116340.0</td>
+      <td>-0.133514</td>
+      <td>0.134033</td>
+      <td>0.000007</td>
+      <td>...</td>
+      <td>0.077163</td>
+      <td>0.058743</td>
+      <td>0.043568</td>
+      <td>0.032809</td>
+      <td>0.026371</td>
+      <td>0.022927</td>
+      <td>66499.0</td>
+      <td>imam</td>
+      <td>buka</td>
+      <td>buka10.wav</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>7.288779</td>
+      <td>4.434814</td>
+      <td>13.0</td>
+      <td>0.004713</td>
+      <td>640.792712</td>
+      <td>30933.0</td>
+      <td>123733.0</td>
+      <td>-0.000580</td>
+      <td>0.000519</td>
+      <td>0.000006</td>
+      <td>...</td>
+      <td>0.000361</td>
+      <td>0.000241</td>
+      <td>0.000143</td>
+      <td>0.000076</td>
+      <td>0.000036</td>
+      <td>0.000015</td>
+      <td>14974.0</td>
+      <td>imam</td>
+      <td>buka</td>
+      <td>buka100.wav</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>20.110433</td>
+      <td>7.614396</td>
+      <td>14.0</td>
+      <td>0.010595</td>
+      <td>785.095241</td>
+      <td>37963.0</td>
+      <td>151854.0</td>
+      <td>-0.000732</td>
+      <td>0.000824</td>
+      <td>0.000005</td>
+      <td>...</td>
+      <td>0.000620</td>
+      <td>0.000398</td>
+      <td>0.000233</td>
+      <td>0.000125</td>
+      <td>0.000063</td>
+      <td>0.000026</td>
+      <td>16559.0</td>
+      <td>imam</td>
+      <td>buka</td>
+      <td>buka11.wav</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>3118.204500</td>
+      <td>142.493144</td>
+      <td>3.0</td>
+      <td>1.679877</td>
+      <td>873.811973</td>
+      <td>37124.0</td>
+      <td>148497.0</td>
+      <td>-0.096771</td>
+      <td>0.096527</td>
+      <td>0.000005</td>
+      <td>...</td>
+      <td>0.086602</td>
+      <td>0.067813</td>
+      <td>0.048252</td>
+      <td>0.031444</td>
+      <td>0.019939</td>
+      <td>0.013732</td>
+      <td>82152.0</td>
+      <td>imam</td>
+      <td>buka</td>
+      <td>buka12.wav</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 159 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">missing</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">missing</span><span class="p">[</span><span class="n">missing</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Series([], dtype: int64)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;label_aksi&quot;</span><span class="p">,</span> <span class="s2">&quot;label_orang&quot;</span><span class="p">,</span> <span class="s2">&quot;file&quot;</span><span class="p">])</span>
+<span class="n">y_action</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;label_aksi&quot;</span><span class="p">]</span>
+<span class="n">y_person</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;label_orang&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">LabelEncoder</span>
+
+<span class="n">label_encoder_action</span> <span class="o">=</span> <span class="n">LabelEncoder</span><span class="p">()</span>
+<span class="n">label_encoder_person</span> <span class="o">=</span> <span class="n">LabelEncoder</span><span class="p">()</span>
+
+<span class="n">y_action_encoded</span> <span class="o">=</span> <span class="n">label_encoder_action</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">y_action</span><span class="p">)</span>
+<span class="n">y_person_encoded</span> <span class="o">=</span> <span class="n">label_encoder_person</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">y_person</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">label_encoder_action</span><span class="o">.</span><span class="n">classes_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">label_encoder_person</span><span class="o">.</span><span class="n">classes_</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;buka&#39; &#39;tutup&#39;]
+[&#39;imam&#39; &#39;mufid&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">X_train_a</span><span class="p">,</span> <span class="n">X_test_a</span><span class="p">,</span> <span class="n">y_train_a</span><span class="p">,</span> <span class="n">y_test_a</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y_action_encoded</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">y_action_encoded</span>
+<span class="p">)</span>
+
+<span class="n">X_train_b</span><span class="p">,</span> <span class="n">X_test_b</span><span class="p">,</span> <span class="n">y_train_b</span><span class="p">,</span> <span class="n">y_test_b</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y_person_encoded</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">y_person_encoded</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
+
+<span class="n">scaler_action</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="n">scaler_person</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+
+<span class="n">X_train_a_scaled</span> <span class="o">=</span> <span class="n">scaler_action</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train_a</span><span class="p">)</span>
+<span class="n">X_test_a_scaled</span> <span class="o">=</span> <span class="n">scaler_action</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test_a</span><span class="p">)</span>
+
+<span class="n">X_train_b_scaled</span> <span class="o">=</span> <span class="n">scaler_person</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train_b</span><span class="p">)</span>
+<span class="n">X_test_b_scaled</span> <span class="o">=</span> <span class="n">scaler_person</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test_b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">classification_report</span><span class="p">,</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">accuracy_score</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="menggunakan-semua-fitur">
+<h1>Menggunakan semua fitur<a class="headerlink" href="#menggunakan-semua-fitur" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_action</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">model_action</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_a_scaled</span><span class="p">,</span> <span class="n">y_train_a</span><span class="p">)</span>
+<span class="n">y_pred_action</span> <span class="o">=</span> <span class="n">model_action</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_a_scaled</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">===== Model: LABEL_AKSI =====&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Akurasi: </span><span class="si">{</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test_a</span><span class="p">,</span><span class="w"> </span><span class="n">y_pred_action</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test_a</span><span class="p">,</span> <span class="n">y_pred_action</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test_a</span><span class="p">,</span> <span class="n">y_pred_action</span><span class="p">,</span> <span class="n">target_names</span><span class="o">=</span><span class="n">label_encoder_action</span><span class="o">.</span><span class="n">classes_</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>===== Model: LABEL_AKSI =====
+Akurasi: 0.9500
+[[38  2]
+ [ 2 38]]
+              precision    recall  f1-score   support
+
+        buka       0.95      0.95      0.95        40
+       tutup       0.95      0.95      0.95        40
+
+    accuracy                           0.95        80
+   macro avg       0.95      0.95      0.95        80
+weighted avg       0.95      0.95      0.95        80
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_person</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">model_person</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_b_scaled</span><span class="p">,</span> <span class="n">y_train_b</span><span class="p">)</span>
+<span class="n">y_pred_action</span> <span class="o">=</span> <span class="n">model_person</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_b_scaled</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">===== Model: LABEL_ORANG =====&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Akurasi: </span><span class="si">{</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test_b</span><span class="p">,</span><span class="w"> </span><span class="n">y_pred_action</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test_b</span><span class="p">,</span> <span class="n">y_pred_action</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test_b</span><span class="p">,</span> <span class="n">y_pred_action</span><span class="p">,</span> <span class="n">target_names</span><span class="o">=</span><span class="n">label_encoder_person</span><span class="o">.</span><span class="n">classes_</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>===== Model: LABEL_ORANG =====
+Akurasi: 1.0000
+[[40  0]
+ [ 0 40]]
+              precision    recall  f1-score   support
+
+        imam       1.00      1.00      1.00        40
+       mufid       1.00      1.00      1.00        40
+
+    accuracy                           1.00        80
+   macro avg       1.00      1.00      1.00        80
+weighted avg       1.00      1.00      1.00        80
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="rank-fitur-menggunakan-information-gain">
+<h1>Rank fitur menggunakan information gain<a class="headerlink" href="#rank-fitur-menggunakan-information-gain" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">mutual_info_classif</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+
+<span class="n">mutual_information_action</span> <span class="o">=</span> <span class="n">mutual_info_classif</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y_action_encoded</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">mutual_information_person</span> <span class="o">=</span> <span class="n">mutual_info_classif</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y_person_encoded</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mutual_information_df_action</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span>
+    <span class="s2">&quot;MI_Score&quot;</span><span class="p">:</span> <span class="n">mutual_information_action</span>
+<span class="p">})</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;MI_Score&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;🔥 Top 10 Fitur Paling Informatif untuk LABEL_AKSI (buka/tutup):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mutual_information_df_action</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>🔥 Top 10 Fitur Paling Informatif untuk LABEL_AKSI (buka/tutup):
+                                 Feature  MI_Score
+2                      0_Autocorrelation  0.512948
+60                    0_Median frequency  0.512516
+74                    0_Spectral entropy  0.449980
+66                     0_Power bandwidth  0.441040
+54                  0_Mean absolute diff  0.439413
+149            0_Wavelet variance_3.12Hz  0.390756
+138  0_Wavelet standard deviation_2.78Hz  0.390655
+128              0_Wavelet energy_2.78Hz  0.390655
+130              0_Wavelet energy_3.12Hz  0.389942
+140  0_Wavelet standard deviation_3.12Hz  0.389942 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mutual_information_df_person</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span>
+    <span class="s2">&quot;MI_Score&quot;</span><span class="p">:</span> <span class="n">mutual_information_person</span>
+<span class="p">})</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;MI_Score&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;🔥 Top 10 Fitur Paling Informatif untuk LABEL_ORANG (imam/mufid):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mutual_information_df_person</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>🔥 Top 10 Fitur Paling Informatif untuk LABEL_ORANG (imam/mufid):
+                   Feature  MI_Score
+19               0_Entropy  0.694399
+58  0_Median absolute diff  0.694399
+72     0_Spectral decrease  0.694399
+80        0_Spectral slope  0.691274
+10                0_ECDF_1  0.689940
+15                0_ECDF_6  0.689940
+14                0_ECDF_5  0.689940
+13                0_ECDF_4  0.689940
+12                0_ECDF_3  0.689940
+11                0_ECDF_2  0.689940 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">top_n</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">top_aksi</span> <span class="o">=</span> <span class="n">mutual_information_df_action</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;MI_Score&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">top_n</span><span class="p">)</span>
+<span class="n">top_orang</span> <span class="o">=</span> <span class="n">mutual_information_df_person</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;MI_Score&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">top_n</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">top_aksi</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Feature&quot;</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;MI_Score&quot;</span><span class="p">,</span>
+    <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;Blues_r&quot;</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;📊 Top </span><span class="si">{</span><span class="n">top_n</span><span class="si">}</span><span class="s2"> Fitur berdasarkan Information Gain - LABEL_AKSI&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Mutual Information Score&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">top_orang</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Feature&quot;</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;MI_Score&quot;</span><span class="p">,</span>
+    <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;Reds_r&quot;</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;📊 Top </span><span class="si">{</span><span class="n">top_n</span><span class="si">}</span><span class="s2"> Fitur berdasarkan Information Gain - LABEL_ORANG&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Mutual Information Score&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\risqi\AppData\Local\Temp\ipykernel_34580\1192745994.py:7: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `y` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.barplot(
+C:\Users\risqi\AppData\Local\Temp\ipykernel_34580\1192745994.py:19: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `y` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.barplot(
+C:\Users\risqi\AppData\Local\Temp\ipykernel_34580\1192745994.py:31: UserWarning: Glyph 128202 (\N{BAR CHART}) missing from current font.
+  plt.tight_layout()
+c:\Users\risqi\AppData\Local\Programs\Python\Python311\Lib\site-packages\IPython\core\pylabtools.py:170: UserWarning: Glyph 128202 (\N{BAR CHART}) missing from current font.
+  fig.canvas.print_figure(bytes_io, **kw)
+</pre></div>
+</div>
+<img alt="_images/b3a274edf5ef49bd18f4d15f21d8639a1c3f316aaf0c9505f0dc197c472237c7.png" src="_images/b3a274edf5ef49bd18f4d15f21d8639a1c3f316aaf0c9505f0dc197c472237c7.png" />
+</div>
+</div>
+</section>
+<section id="feature-selection">
+<h1>Feature selection<a class="headerlink" href="#feature-selection" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.15</span>
+
+<span class="n">selected_features_action</span> <span class="o">=</span> <span class="n">mutual_information_df_action</span><span class="p">[</span><span class="n">mutual_information_df_action</span><span class="p">[</span><span class="s1">&#39;MI_Score&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">][</span><span class="s1">&#39;Feature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">selected_features_person</span> <span class="o">=</span> <span class="n">mutual_information_df_person</span><span class="p">[</span><span class="n">mutual_information_df_person</span><span class="p">[</span><span class="s1">&#39;MI_Score&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">][</span><span class="s1">&#39;Feature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="n">selected_features_action</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">selected_features_action</span><span class="p">)</span>
+<span class="n">selected_features_person</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">selected_features_person</span><span class="p">)</span>
+
+<span class="n">X_selected_action</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">selected_features_action</span><span class="p">]</span>
+<span class="n">X_selected_person</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">selected_features_person</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Jumlah fitur untuk label aksi: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">selected_features_action</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Jumlah fitur untuk label orang: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">selected_features_person</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah fitur untuk label aksi: 103
+Jumlah fitur untuk label orang: 141
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="modeling-again-after-feature-selection">
+<h1>Modeling again, after feature selection<a class="headerlink" href="#modeling-again-after-feature-selection" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train_a</span><span class="p">,</span> <span class="n">X_test_a</span><span class="p">,</span> <span class="n">y_train_a</span><span class="p">,</span> <span class="n">y_test_a</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X_selected_action</span><span class="p">,</span> <span class="n">y_action_encoded</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">y_action_encoded</span>
+<span class="p">)</span>
+
+<span class="n">X_train_b</span><span class="p">,</span> <span class="n">X_test_b</span><span class="p">,</span> <span class="n">y_train_b</span><span class="p">,</span> <span class="n">y_test_b</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X_selected_person</span><span class="p">,</span> <span class="n">y_person_encoded</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">y_person_encoded</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scaler_action</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="n">scaler_person</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+
+<span class="n">X_train_a_scaled</span> <span class="o">=</span> <span class="n">scaler_action</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train_a</span><span class="p">)</span>
+<span class="n">X_test_a_scaled</span> <span class="o">=</span> <span class="n">scaler_action</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test_a</span><span class="p">)</span>
+
+<span class="n">X_train_b_scaled</span> <span class="o">=</span> <span class="n">scaler_person</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train_b</span><span class="p">)</span>
+<span class="n">X_test_b_scaled</span> <span class="o">=</span> <span class="n">scaler_person</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test_b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_action</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">model_action</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_a_scaled</span><span class="p">,</span> <span class="n">y_train_a</span><span class="p">)</span>
+
+<span class="n">y_pred_action</span> <span class="o">=</span> <span class="n">model_action</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_a_scaled</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=== Evaluasi Model untuk LABEL_AKSI ===&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test_a</span><span class="p">,</span> <span class="n">y_pred_action</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Akurasi:&quot;</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test_a</span><span class="p">,</span> <span class="n">y_pred_action</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test_a</span><span class="p">,</span> <span class="n">y_pred_action</span><span class="p">),</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Confusion Matrix - LABEL_AKSI&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Predicted&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;True&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== Evaluasi Model untuk LABEL_AKSI ===
+              precision    recall  f1-score   support
+
+           0       0.97      0.97      0.97        40
+           1       0.97      0.97      0.97        40
+
+    accuracy                           0.97        80
+   macro avg       0.97      0.97      0.97        80
+weighted avg       0.97      0.97      0.97        80
+
+Akurasi: 0.975
+</pre></div>
+</div>
+<img alt="_images/96bf51d19a33bf4938343404ca42613bba7e2288b82676fd4110494bf922e339.png" src="_images/96bf51d19a33bf4938343404ca42613bba7e2288b82676fd4110494bf922e339.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_person</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">model_person</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_b_scaled</span><span class="p">,</span> <span class="n">y_train_b</span><span class="p">)</span>
+
+<span class="n">y_pred_person</span> <span class="o">=</span> <span class="n">model_person</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_b_scaled</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Evaluasi Model untuk LABEL_ORANG ===&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test_b</span><span class="p">,</span> <span class="n">y_pred_person</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Akurasi:&quot;</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test_b</span><span class="p">,</span> <span class="n">y_pred_person</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test_b</span><span class="p">,</span> <span class="n">y_pred_person</span><span class="p">),</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;OrRd&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Confusion Matrix - LABEL_ORANG&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Predicted&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;True&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== Evaluasi Model untuk LABEL_ORANG ===
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00        40
+           1       1.00      1.00      1.00        40
+
+    accuracy                           1.00        80
+   macro avg       1.00      1.00      1.00        80
+weighted avg       1.00      1.00      1.00        80
+
+Akurasi: 1.0
+</pre></div>
+</div>
+<img alt="_images/d8f10f211f5753db43f6a92fc3900ddd9abbc5dc841c26725b40d0149619077b.png" src="_images/d8f10f211f5753db43f6a92fc3900ddd9abbc5dc841c26725b40d0149619077b.png" />
+</div>
+</div>
+</section>
+<section id="simpan-model-scaler">
+<h1>Simpan model &amp; Scaler<a class="headerlink" href="#simpan-model-scaler" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;model/model_action.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">model_action</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;model/model_person.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">model_person</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;model/scaler_action.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">scaler_action</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;model/scaler_person.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">scaler_person</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✅ Kedua model &amp; scaler berhasil disimpan sebagai file .pkl&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Kedua model &amp; scaler berhasil disimpan sebagai file .pkl
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;model/features_action.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">selected_features_action</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;model/features_person.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">selected_features_person</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;model_action.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;model_person.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;scaler_action.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;scaler_person.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;features_action.json&quot;</span><span class="p">,</span> <span class="s2">&quot;features_person.json&quot;</span><span class="p">]:</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;🗑️ Deleted old </span><span class="si">{</span><span class="n">f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>🗑️ Deleted old model_action.pkl
+🗑️ Deleted old model_person.pkl
+🗑️ Deleted old scaler_action.pkl
+🗑️ Deleted old scaler_person.pkl
+🗑️ Deleted old features_action.json
+🗑️ Deleted old features_person.json
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="voiceDetection.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Voice Detection</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="car.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Car Detection</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Menggunakan semua fitur</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#rank-fitur-menggunakan-information-gain">Rank fitur menggunakan information gain</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection">Feature selection</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#modeling-again-after-feature-selection">Modeling again, after feature selection</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#simpan-model-scaler">Simpan model &amp; Scaler</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By AHMAD MUFID RISQI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

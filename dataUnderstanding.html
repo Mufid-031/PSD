@@ -1,0 +1,1077 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Data Understanding &#8212; Proyek Sains Data</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'dataUnderstanding';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Ekplorasi Data" href="dataExploration.html" />
+    <link rel="prev" title="Bussiness Understanding" href="bussinessUnderstanding.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.jpg" class="logo__image only-light" alt="Proyek Sains Data - Home"/>
+    <script>document.write(`<img src="_static/logo.jpg" class="logo__image only-dark" alt="Proyek Sains Data - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to my Proyek Sains Data
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="bussinessUnderstanding.html">Bussiness Understanding</a></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Data Understanding</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="dataExploration.html">Ekplorasi Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="oversampling.html">Oversampling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="timeSeries.html">Time Series dataset for prediction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="voiceDetection.html">Voice Detection</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="voiceDetection-2.html">Menggunakan semua fitur</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="car.html">Car Detection</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Mufid-031/PSD" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Mufid-031/PSD/issues/new?title=Issue%20on%20page%20%2FdataUnderstanding.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/dataUnderstanding.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Data Understanding</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#apa-itu-data-understanding">Apa Itu Data Understanding?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pentingnya-memahami-data-yang-kita-ambil">Pentingnya Memahami Data yang Kita Ambil</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#observasi-dari-data-dan-jenis-jenis-variabel">Observasi dari Data dan Jenis-Jenis Variabel</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekplorasi-data-dengan-python">Ekplorasi Data (dengan python)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekplorasi-data-dengan-power-bi">Ekplorasi Data (dengan Power BI)</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="data-understanding">
+<h1>Data Understanding<a class="headerlink" href="#data-understanding" title="Link to this heading">#</a></h1>
+<section id="apa-itu-data-understanding">
+<h2>Apa Itu Data Understanding?<a class="headerlink" href="#apa-itu-data-understanding" title="Link to this heading">#</a></h2>
+<p><strong>Data Understanding</strong> (Pemahaman Data) adalah tahap kedua dalam metodologi CRISP-DM (Cross-Industry Standard Process for Data Mining) dan merupakan fase kritis dalam siklus hidup data science atau analisis data apa pun. Ini adalah proses mendalam untuk mengenali karakteristik, kualitas, dan pola awal dari data yang telah dikumpulkan sebelum melakukan pemrosesan lebih lanjut, pemodelan, atau pengambilan keputusan.</p>
+<p>Intinya, Data Understanding adalah upaya untuk “berkenalan” dengan data Anda. Seperti seorang detektif yang memeriksa semua bukti sebelum menyelesaikan kasus, seorang analis data harus sepenuhnya memahami data mereka sebelum dapat menarik wawasan yang valid darinya.</p>
+<hr class="docutils" />
+</section>
+<section id="pentingnya-memahami-data-yang-kita-ambil">
+<h2>Pentingnya Memahami Data yang Kita Ambil<a class="headerlink" href="#pentingnya-memahami-data-yang-kita-ambil" title="Link to this heading">#</a></h2>
+<p>Memahami data bukanlah langkah formalitas, tetapi fondasi dari seluruh analisis. Kesalahan dalam memahami data akan berakibat fatal pada tahap selanjutnya.</p>
+<ol class="arabic simple">
+<li><p>Menghindari Kesimpulan yang Salah (Garbage In, Garbage Out): Jika data tidak dipahami dengan benar, model atau analisis yang dihasilkan akan cacat dan kesimpulan yang ditarik bisa menyesatkan.</p></li>
+<li><p>Memilih Teknik Analisis yang Tepat: Jenis data yang berbeda (numerik, kategorikal) memerlukan teknik statistik, visualisasi, dan algoritma machine learning yang berbeda. Memahami jenis variabel membantu memilih metode yang tepat.</p></li>
+<li><p>Mengidentifikasi Masalah Data Lebih Awal: Tahap ini memungkinkan kita menemukan anomali seperti data yang hilang (missing values), outlier (nilai ekstrem), atau ketidakkonsistenan sejak dini, sehingga dapat ditangani sebelum analisis.</p></li>
+<li><p>Membangun Hipotesis yang Bermakna: Dengan mengeksplorasi data, kita dapat mulai melihat pola, hubungan, dan tren yang dapat membentuk pertanyaan penelitian atau hipotesis yang lebih terfokus.</p></li>
+<li><p>Mengkomunikasikan Temuan dengan Efektif: Pemahaman yang mendalam tentang data memungkinkan analis untuk menjelaskan hasil dan keterbatasan analisis kepada pemangku kepentingan (stakeholders) dengan lebih jelas dan meyakinkan.</p></li>
+</ol>
+<hr class="docutils" />
+</section>
+<section id="observasi-dari-data-dan-jenis-jenis-variabel">
+<h2>Observasi dari Data dan Jenis-Jenis Variabel<a class="headerlink" href="#observasi-dari-data-dan-jenis-jenis-variabel" title="Link to this heading">#</a></h2>
+<p>Saat pertama kali melihat sebuah dataset, kita melakukan observasi untuk mengidentifikasi jenis setiap variabel (kolom). Klasifikasi variabel sangat penting.</p>
+<hr class="docutils" />
+</section>
+<section id="ekplorasi-data-dengan-python">
+<h2>Ekplorasi Data (dengan python)<a class="headerlink" href="#ekplorasi-data-dengan-python" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ================================</span>
+<span class="c1"># 1. Import Library</span>
+<span class="c1"># ================================</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">psycopg2</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">LabelEncoder</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dotenv</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dotenv</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;whitegrid&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">5</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># ================================</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="c1"># 1. Import Library</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="c1"># ================================</span>
+<span class="ne">----&gt; </span><span class="mi">5</span> <span class="kn">import</span><span class="w"> </span><span class="nn">psycopg2</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;psycopg2&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ================================</span>
+<span class="c1"># 2. Connect to Supabase, create table and insert data from csv file</span>
+<span class="c1"># ================================</span>
+
+<span class="c1"># Load environment variables</span>
+<span class="n">load_dotenv</span><span class="p">()</span>
+
+<span class="n">USER</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">)</span>
+<span class="n">PASSWORD</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;password&quot;</span><span class="p">)</span>
+<span class="n">HOST</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;host&quot;</span><span class="p">)</span>
+<span class="n">PORT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;port&quot;</span><span class="p">)</span>
+<span class="n">DBNAME</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;dbname&quot;</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">connection</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+        <span class="n">user</span><span class="o">=</span><span class="n">USER</span><span class="p">,</span>
+        <span class="n">password</span><span class="o">=</span><span class="n">PASSWORD</span><span class="p">,</span>
+        <span class="n">host</span><span class="o">=</span><span class="n">HOST</span><span class="p">,</span>
+        <span class="n">port</span><span class="o">=</span><span class="n">PORT</span><span class="p">,</span>
+        <span class="n">dbname</span><span class="o">=</span><span class="n">DBNAME</span>
+    <span class="p">)</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✅ Connection successful!&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Cek apakah tabel &#39;student_stress_level&#39; sudah ada</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        SELECT EXISTS (</span>
+<span class="s2">            SELECT FROM information_schema.tables </span>
+<span class="s2">            WHERE table_name = &#39;student_stress_level&#39;</span>
+<span class="s2">        );</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span>
+    <span class="n">table_exists</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">table_exists</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ℹ️ Tabel belum ada, membuat tabel baru...&quot;</span><span class="p">)</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            CREATE TABLE student_stress_level (</span>
+<span class="s2">                id SERIAL PRIMARY KEY,</span>
+<span class="s2">                anxiety_level INT,</span>
+<span class="s2">                self_esteem INT,</span>
+<span class="s2">                mental_health_history INT,</span>
+<span class="s2">                depression INT,</span>
+<span class="s2">                headache INT,</span>
+<span class="s2">                blood_pressure INT,</span>
+<span class="s2">                sleep_quality INT,</span>
+<span class="s2">                breathing_problem INT,</span>
+<span class="s2">                noise_level INT,</span>
+<span class="s2">                living_conditions INT,</span>
+<span class="s2">                safety INT,</span>
+<span class="s2">                basic_needs INT,</span>
+<span class="s2">                academic_performance INT,</span>
+<span class="s2">                study_load INT,</span>
+<span class="s2">                teacher_student_relationship INT,</span>
+<span class="s2">                future_career_concerns INT,</span>
+<span class="s2">                social_support INT,</span>
+<span class="s2">                peer_pressure INT,</span>
+<span class="s2">                extracurricular_activities INT,</span>
+<span class="s2">                bullying INT,</span>
+<span class="s2">                stress_level INT</span>
+<span class="s2">            );</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✅ Tabel student_stress_level berhasil dibuat&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Import CSV</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;data/StressLevelDataset.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>  <span class="c1"># skip header</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">copy_from</span><span class="p">(</span>
+                <span class="n">f</span><span class="p">,</span> 
+                <span class="s2">&quot;student_stress_level&quot;</span><span class="p">,</span> 
+                <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> 
+                <span class="n">columns</span><span class="o">=</span><span class="p">(</span>
+                <span class="s2">&quot;anxiety_level&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;self_esteem&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;mental_health_history&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;depression&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;headache&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;blood_pressure&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sleep_quality&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;breathing_problem&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;noise_level&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;living_conditions&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;safety&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;basic_needs&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;academic_performance&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_load&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;teacher_student_relationship&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;future_career_concerns&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;social_support&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;peer_pressure&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;extracurricular_activities&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;bullying&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;stress_level&quot;</span>
+            <span class="p">))</span>
+
+        <span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✅ Data berhasil diimport ke Supabase&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✅ Table sudah ada&quot;</span><span class="p">)</span>
+
+    <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;❌ Failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Connection successful!
+ℹ️ Tabel belum ada, membuat tabel baru...
+✅ Tabel student_stress_level berhasil dibuat
+✅ Data berhasil diimport ke Supabase
+✅ Table sudah ada
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ================================</span>
+<span class="c1"># 3. Read data from Supabase</span>
+<span class="c1"># ================================</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">connection</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+        <span class="n">user</span><span class="o">=</span><span class="n">USER</span><span class="p">,</span>
+        <span class="n">password</span><span class="o">=</span><span class="n">PASSWORD</span><span class="p">,</span>
+        <span class="n">host</span><span class="o">=</span><span class="n">HOST</span><span class="p">,</span>
+        <span class="n">port</span><span class="o">=</span><span class="n">PORT</span><span class="p">,</span>
+        <span class="n">dbname</span><span class="o">=</span><span class="n">DBNAME</span>
+    <span class="p">)</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;SELECT * FROM student_stress_level;&#39;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">connection</span><span class="p">)</span>
+
+    <span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✅ Data berhasil diambil, jumlah baris&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+    
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;❌ Failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\risqi\AppData\Local\Temp\ipykernel_22056\313617342.py:14: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql(query, connection)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Data berhasil diambil, jumlah baris 1100
+   id  anxiety_level  self_esteem  mental_health_history  depression  \
+0   1             14           20                      0          11   
+1   2             15            8                      1          15   
+2   3             12           18                      1          14   
+3   4             16           12                      1          15   
+4   5             16           28                      0           7   
+
+   headache  blood_pressure  sleep_quality  breathing_problem  noise_level  \
+0         2               1              2                  4            2   
+1         5               3              1                  4            3   
+2         2               1              2                  2            2   
+3         4               3              1                  3            4   
+4         2               3              5                  1            3   
+
+   ...  basic_needs  academic_performance  study_load  \
+0  ...            2                     3           2   
+1  ...            2                     1           4   
+2  ...            2                     2           3   
+3  ...            2                     2           4   
+4  ...            3                     4           3   
+
+   teacher_student_relationship  future_career_concerns  social_support  \
+0                             3                       3               2   
+1                             1                       5               1   
+2                             3                       2               2   
+3                             1                       4               1   
+4                             1                       2               1   
+
+   peer_pressure  extracurricular_activities  bullying  stress_level  
+0              3                           3         2             1  
+1              4                           5         5             2  
+2              3                           2         2             1  
+3              4                           4         5             2  
+4              5                           0         5             1  
+
+[5 rows x 22 columns]
+</pre></div>
+</div>
+</div>
+</div>
+<p>📌 Penjelasan:</p>
+<ul class="simple">
+<li><p>konek ke database Supabase PostgreSQL menggunakan psycopg2.</p></li>
+<li><p>Data disimpan dalam pandas DataFrame (df) supaya mudah diolah.</p></li>
+<li><p>df.head() menampilkan 5 baris pertama.</p></li>
+</ul>
+<hr class="docutils" />
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ================================</span>
+<span class="c1"># 4. Eksplorasi Struktur Data</span>
+<span class="c1"># ================================</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 1100 entries, 0 to 1099
+Data columns (total 22 columns):
+ #   Column                        Non-Null Count  Dtype
+---  ------                        --------------  -----
+ 0   id                            1100 non-null   int64
+ 1   anxiety_level                 1100 non-null   int64
+ 2   self_esteem                   1100 non-null   int64
+ 3   mental_health_history         1100 non-null   int64
+ 4   depression                    1100 non-null   int64
+ 5   headache                      1100 non-null   int64
+ 6   blood_pressure                1100 non-null   int64
+ 7   sleep_quality                 1100 non-null   int64
+ 8   breathing_problem             1100 non-null   int64
+ 9   noise_level                   1100 non-null   int64
+ 10  living_conditions             1100 non-null   int64
+ 11  safety                        1100 non-null   int64
+ 12  basic_needs                   1100 non-null   int64
+ 13  academic_performance          1100 non-null   int64
+ 14  study_load                    1100 non-null   int64
+ 15  teacher_student_relationship  1100 non-null   int64
+ 16  future_career_concerns        1100 non-null   int64
+ 17  social_support                1100 non-null   int64
+ 18  peer_pressure                 1100 non-null   int64
+ 19  extracurricular_activities    1100 non-null   int64
+ 20  bullying                      1100 non-null   int64
+ 21  stress_level                  1100 non-null   int64
+dtypes: int64(22)
+memory usage: 189.2 KB
+</pre></div>
+</div>
+</div>
+</div>
+<p>📌 Penjelasan:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://df.info">df.info</a>() memberikan info jumlah baris, tipe data, dan kolom.</p></li>
+<li><p>describe() memberikan statistik (mean, std, min, max, dll).</p></li>
+</ul>
+<hr class="docutils" />
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>id                              0
+anxiety_level                   0
+self_esteem                     0
+mental_health_history           0
+depression                      0
+headache                        0
+blood_pressure                  0
+sleep_quality                   0
+breathing_problem               0
+noise_level                     0
+living_conditions               0
+safety                          0
+basic_needs                     0
+academic_performance            0
+study_load                      0
+teacher_student_relationship    0
+future_career_concerns          0
+social_support                  0
+peer_pressure                   0
+extracurricular_activities      0
+bullying                        0
+stress_level                    0
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>📌 Penjelasan:</p>
+<ul class="simple">
+<li><p>Penting untuk cek apakah ada missing value.</p></li>
+</ul>
+<hr class="docutils" />
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ================================</span>
+<span class="c1"># 5. Analisis Distribusi Variabel</span>
+<span class="c1"># ================================</span>
+
+<span class="c1"># Contoh distribusi stress_level</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;stress_level&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Distribusi Stress Level&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Contoh distribusi anxiety_level</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;anxiety_level&quot;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Distribusi Anxiety Level&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/44c13e8917066b3b8d5e2c936b88161d8ebbc80f40d3b863487e617a774ae541.png" src="_images/44c13e8917066b3b8d5e2c936b88161d8ebbc80f40d3b863487e617a774ae541.png" />
+<img alt="_images/2e6e43238d005e1251ad5a3928427f3fdc0e6fbded75547a52163e474eea9f06.png" src="_images/2e6e43238d005e1251ad5a3928427f3fdc0e6fbded75547a52163e474eea9f06.png" />
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="n">The</span> <span class="n">Kernel</span> <span class="n">crashed</span> <span class="k">while</span> <span class="n">executing</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">current</span> <span class="n">cell</span> <span class="ow">or</span> <span class="n">a</span> <span class="n">previous</span> <span class="n">cell</span><span class="o">.</span> 
+
+<span class="n">Please</span> <span class="n">review</span> <span class="n">the</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">cell</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="n">to</span> <span class="n">identify</span> <span class="n">a</span> <span class="n">possible</span> <span class="n">cause</span> <span class="n">of</span> <span class="n">the</span> <span class="n">failure</span><span class="o">.</span> 
+
+<span class="n">Click</span> <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;https://aka.ms/vscodeJupyterKernelCrash&#39;</span><span class="o">&gt;</span><span class="n">here</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="k">for</span> <span class="n">more</span> <span class="n">info</span><span class="o">.</span> 
+
+<span class="n">View</span> <span class="n">Jupyter</span> <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;command:jupyter.viewOutput&#39;</span><span class="o">&gt;</span><span class="n">log</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="k">for</span> <span class="n">further</span> <span class="n">details</span><span class="o">.</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>📌 Penjelasan:</p>
+<ul class="simple">
+<li><p>Visualisasi awal → apakah data seimbang atau ada kelas yang dominan.</p></li>
+<li><p>Bisa pakai bar chart (untuk kategori) atau histogram (untuk angka).</p></li>
+</ul>
+<hr class="docutils" />
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ================================</span>
+<span class="c1"># 6. Analisis Korelasi Antar Variabel</span>
+<span class="c1"># ================================</span>
+
+<span class="c1"># Encode kategori jadi angka agar bisa dihitung korelasi</span>
+<span class="n">df_encoded</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">col</span><span class="p">:</span> <span class="n">LabelEncoder</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)))</span>
+
+<span class="c1"># Korelasi Pearson</span>
+<span class="n">corr</span> <span class="o">=</span> <span class="n">df_encoded</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+
+<span class="c1"># Heatmap</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">corr</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;coolwarm&quot;</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Correlation Heatmap&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/c038a601060b6e63122738fe9cef46bc08cbf16f04d9ad5e0943131e4acdb2ba.png" src="_images/c038a601060b6e63122738fe9cef46bc08cbf16f04d9ad5e0943131e4acdb2ba.png" />
+</div>
+</div>
+<p>📌 Penjelasan:</p>
+<ul class="simple">
+<li><p>Karena ada kolom kategori, kita encode dulu ke angka.</p></li>
+<li><p>Korelasi membantu lihat hubungan, misalnya apakah depression sejalan dengan anxiety_level.</p></li>
+<li><p>Heatmap memudahkan spotting variabel yang saling berkaitan.</p></li>
+</ul>
+<hr class="docutils" />
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ================================</span>
+<span class="c1"># 7. Deteksi Outlier (IQR Method)</span>
+<span class="c1"># ================================</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">detect_outliers_iqr</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+    <span class="n">Q1</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+    <span class="n">Q3</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+    <span class="n">IQR</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">-</span> <span class="n">Q1</span>
+    <span class="n">lower</span> <span class="o">=</span> <span class="n">Q1</span> <span class="o">-</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span>
+    <span class="n">upper</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span>
+    <span class="n">outliers</span> <span class="o">=</span> <span class="n">data</span><span class="p">[(</span><span class="n">data</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lower</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">upper</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">outliers</span>
+
+<span class="c1"># Contoh cek outlier pada self_esteem</span>
+<span class="n">outliers</span> <span class="o">=</span> <span class="n">detect_outliers_iqr</span><span class="p">(</span><span class="n">df_encoded</span><span class="p">,</span> <span class="s2">&quot;self_esteem&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Jumlah outlier di self_esteem:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">))</span>
+
+<span class="c1"># Visualisasi boxplot</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">df_encoded</span><span class="p">[</span><span class="s2">&quot;self_esteem&quot;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Boxplot Self Esteem (cek outlier)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah outlier di self_esteem: 0
+</pre></div>
+</div>
+<img alt="_images/663cf7036b10d96c3e508091309c85747038a6784a95cb6939eba6fb46757b5e.png" src="_images/663cf7036b10d96c3e508091309c85747038a6784a95cb6939eba6fb46757b5e.png" />
+</div>
+</div>
+<p>📌 Penjelasan:</p>
+<ul class="simple">
+<li><p>IQR Method digunakan untuk deteksi outlier.</p></li>
+<li><p>Boxplot membantu melihat apakah ada nilai ekstrim.</p></li>
+</ul>
+<hr class="docutils" />
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ================================</span>
+<span class="c1"># 8. Pairplot (Hubungan antar variabel penting)</span>
+<span class="c1"># ================================</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">df_encoded</span><span class="p">[[</span><span class="s2">&quot;anxiety_level&quot;</span><span class="p">,</span> <span class="s2">&quot;self_esteem&quot;</span><span class="p">,</span> <span class="s2">&quot;depression&quot;</span><span class="p">,</span> <span class="s2">&quot;stress_level&quot;</span><span class="p">]])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/73f5191f7b12ddf6c56ab35eca58fa421967df0442c6835b6d40433897c5cd8e.png" src="_images/73f5191f7b12ddf6c56ab35eca58fa421967df0442c6835b6d40433897c5cd8e.png" />
+</div>
+</div>
+<p>📌 Penjelasan:</p>
+<ul class="simple">
+<li><p>Pairplot = scatterplot + histogram antar variabel.</p></li>
+<li><p>Bagus untuk lihat pola hubungan linear/non-linear antar faktor psikologis &amp; stress.</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="ekplorasi-data-dengan-power-bi">
+<h2>Ekplorasi Data (dengan Power BI)<a class="headerlink" href="#ekplorasi-data-dengan-power-bi" title="Link to this heading">#</a></h2>
+<p>Get data menggunakan script python di Power BI</p>
+<ul class="simple">
+<li><p>Masuk Power BI</p></li>
+<li><p>klik Get data &gt; python script</p></li>
+<li><p>paste code dibawah ini</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dotenv</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dotenv</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="n">load_dotenv</span><span class="p">()</span>
+
+<span class="n">USER</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">)</span>
+<span class="n">PASSWORD</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;password&quot;</span><span class="p">)</span>
+<span class="n">HOST</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;host&quot;</span><span class="p">)</span>
+<span class="n">PORT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;port&quot;</span><span class="p">)</span>
+<span class="n">DBNAME</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;dbname&quot;</span><span class="p">)</span>
+
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;postgresql+psycopg2://</span><span class="si">{</span><span class="n">USER</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">PASSWORD</span><span class="si">}</span><span class="s2">@</span><span class="si">{</span><span class="n">HOST</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">PORT</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">DBNAME</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT * FROM student_stress_level;&quot;</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">engine</span><span class="p">)</span>
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">df</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><img alt="deskripsi gambar" src="_images/load-data.png" /></p>
+<ul class="simple">
+<li><p>Checklist dataset dan load</p></li>
+<li><p>tunggu proses load selesai</p></li>
+</ul>
+<p><img alt="deskripsi gambar" src="_images/image-from-connect-using-python.png" /></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_engine</span>
+
+<span class="n">USER</span> <span class="o">=</span> <span class="s2">&quot;root&quot;</span>
+<span class="n">PASSWORD</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">HOST</span> <span class="o">=</span> <span class="s2">&quot;localhost&quot;</span>
+<span class="n">PORT</span> <span class="o">=</span> <span class="mi">3306</span>
+<span class="n">DBNAME</span> <span class="o">=</span> <span class="s2">&quot;iris_dataset&quot;</span>
+
+<span class="c1"># Buat koneksi ke MySQL (pakai driver PyMySQL)</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mysql+pymysql://</span><span class="si">{</span><span class="n">USER</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">PASSWORD</span><span class="si">}</span><span class="s2">@</span><span class="si">{</span><span class="n">HOST</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">PORT</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">DBNAME</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Query ke database MySQL</span>
+<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT * FROM iris;&quot;</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">engine</span><span class="p">)</span>
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">df</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="bussinessUnderstanding.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Bussiness Understanding</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="dataExploration.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Ekplorasi Data</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#apa-itu-data-understanding">Apa Itu Data Understanding?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pentingnya-memahami-data-yang-kita-ambil">Pentingnya Memahami Data yang Kita Ambil</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#observasi-dari-data-dan-jenis-jenis-variabel">Observasi dari Data dan Jenis-Jenis Variabel</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekplorasi-data-dengan-python">Ekplorasi Data (dengan python)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekplorasi-data-dengan-power-bi">Ekplorasi Data (dengan Power BI)</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By AHMAD MUFID RISQI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
