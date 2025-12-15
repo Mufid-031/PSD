@@ -10,7 +10,7 @@ audio-recorder-streamlit
 tsfel
 opencv-python-headless
 
-jupyter-book
+jupyter-book=1.0.4
 ghp-import
 nbconvert
 nbformat
